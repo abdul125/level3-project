@@ -20,7 +20,7 @@ cluster-up:
 	    --k3s-server-arg '--no-deploy=traefik' \
 	    --agents 3
 
-init: logs repos namespaces
+init: logs repos namespaces install-cicd
 platform: install-service-mesh install-ingress install-logging install-monitoring install-secrets
 deplatform: delete-service-mesh delete-ingress delete-logging delete-monitoring delete-secrets
 
@@ -36,6 +36,7 @@ repos:
 	helm repo add grafana https://grafana.github.io/helm-charts
 	helm repo add elastic https://helm.elastic.co
 	helm repo add fluent https://fluent.github.io/helm-charts
+	helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
 	helm repo update
 
 namespaces:
@@ -47,8 +48,6 @@ install-cicd:
 	kubectl apply -f https://storage.googleapis.com/tekton-releases/dashboard/latest/tekton-dashboard-release.yaml
 	kubectl patch svc tekton-dashboard -n tekton-pipelines --type='json' -p '[{"op":"replace", "path":"/spec/type", "value":"NodePort"}]'
 	kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/master/task/git-clone/0.2/git-clone.yaml
-
-level3: install-secrets install-monitoring install-logging
 
 delete-cicd:
 	echo "cicd: delete" | tee -a output.log
@@ -64,6 +63,8 @@ delete-dashboard:
 	echo "Dashboard: delete" | tee -a output.log
 	helm delete -n dashboard dashboard 2>/dev/null | true
 
+level3: install-secrets install-monitoring install-logging
+
 install-service-mesh:
 	echo "Service-Mesh: install" | tee -a output.log
 	helm install consul hashicorp/consul -n service-mesh -f platform/service-mesh/values.yaml | tee -a output.log
@@ -74,7 +75,8 @@ delete-service-mesh:
 
 install-secrets:
 	echo "Secrets: install" | tee -a output.log
-	helm install vault hashicorp/vault -n secrets -f platform/secrets/values.yaml | tee -a output.log
+	#helm install vault hashicorp/vault -n secrets -f platform/secrets/values.yaml | tee -a output.log
+	helm install vault hashicorp/vault -n secrets | tee -a output.log
 
 delete-secrets:
 	echo "Secrets: delete" | tee -a output.log
@@ -94,7 +96,8 @@ delete-monitoring: delete-prometheus delete-grafana
 
 install-prometheus:
 	echo "Monitoring: install-grafana" | tee -a output.log
-	helm install -n monitoring -f platform/monitoring/prometheus-values.yaml prometheus prometheus-community/prometheus| tee -a output.log
+	#helm install -n monitoring -f platform/monitoring/prometheus-values.yaml prometheus prometheus-community/prometheus| tee -a output.log
+	helm install -n monitoring prometheus prometheus-community/prometheusi | tee -a output.log
 
 delete-prometheus:
 	echo "Monitoring: delete-prometheus" | tee -a output.log
@@ -102,18 +105,23 @@ delete-prometheus:
 
 install-grafana:
 	echo "Monitoring: install-grafana" | tee -a output.log
-	helm install grafana grafana/grafana -n monitoring -f platform/monitoring/grafana-values.yaml | tee -a output.log
+	#helm install grafana grafana/grafana -n monitoring -f platform/monitoring/grafana-values.yaml | tee -a output.log
+	helm install grafana grafana/grafana -n monitoring --set service.type=NodePort | tee -a output.log
 
-delete-grafana:	echo "Monitoring: delete-grafana" | tee -a output.log
+delete-grafana:
+	echo "Monitoring: delete-grafana" | tee -a output.log
 	helm delete -n monitoring grafana 2>/dev/null | true
 
 install-logging:
 	echo "Logging: install-elasticsearch" | tee -a output.log
-	helm install elasticsearch elastic/elasticsearch -n logging -f platform/logging/elastic-values.yaml | tee -a output.log
+	#helm install elasticsearch elastic/elasticsearch -n logging -f platform/logging/elastic-values.yaml | tee -a output.log
+	helm install elasticsearch elastic/elasticsearch -n logging | tee -a output.log
 	echo "Logging: install-fluent-bit" | tee -a output.log
-	helm install fluent-bit fluent/fluent-bit -n logging -f platform/logging/fluent-values.yaml | tee -a output.log
+	#helm install fluent-bit fluent/fluent-bit -n logging -f platform/logging/fluent-values.yaml | tee -a output.log
+	helm install fluent-bit fluent/fluent-bit -n logging | tee -a output.log
 	echo "Logging: install-kibana" | tee -a output.log
-	helm install kibana elastic/kibana -n logging -f platform/logging/kibana-values.yaml | tee -a output.log
+	#helm install kibana elastic/kibana -n logging -f platform/logging/kibana-values.yaml | tee -a output.log
+	helm install kibana elastic/kibana -n logging --set service.type=NodePort | tee -a output.log
 
 delete-logging:
 	echo "Logging: delete-elasticsearch" | tee -a output.log
@@ -122,3 +130,4 @@ delete-logging:
 	helm delete fluent-bit -n logging | tee -a output.log 2>/dev/null | true
 	echo "Logging: delete-elasticsearch" | tee -a output.log
 	helm delete kibana elastic/kibana -n logging | tee -a output.log 2>/dev/null | true
+
