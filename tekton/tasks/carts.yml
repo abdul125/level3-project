@@ -1,20 +1,20 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: payment-task
+  name: carts-task
   namespace: tekton-pipelines
 spec:
   params:
     - name: pathToDockerFile
       type: string
       description: The path to the dockerfile to build
-      default: $(resources.inputs.docker-source.path)/docker/payment
+      default: $(resources.inputs.docker-source.path)/Dockerfile
     - name: pathToContext
       type: string
       description: |
         The build context used by Kaniko
         (https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts)
-      default: $(resources.inputs.docker-source.path)/project-assessment-site
+      default: $(resources.inputs.docker-source.path)
   resources:
     inputs:
       - name: docker-source
@@ -31,7 +31,6 @@ spec:
         ls -aAlth 
         ls -aAlth $(resources.inputs.docker-source.path)
         echo $(resources.outputs.builtImage.url)
-
     - name: deploy
       image: registry.cn-beijing.aliyuncs.com/acs-sample/jenkins-slave-kubectl:1.11.5
       script: |
