@@ -8,19 +8,19 @@ spec:
     - name: pathToDockerFile
       type: string
       description: The path to the dockerfile to build
-      default: $(resources.inputs.docker-source.path)/docker/payment
+      default: $(resources.inputs.docker-source.path)/docker/payment/Dockerfile
     - name: pathToContext
       type: string
       description: |
         The build context used by Kaniko
         (https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts)
-      default: $(resources.inputs.docker-source.path)/project-assessment-site
+      default: $(resources.inputs.docker-source.path)/docker/payment
   resources:
     inputs:
-      - name: docker-source
+      - name: payment-dockerfile
         type: git
     outputs:
-      - name: builtImage
+      - name: payment-image
         type: image
   steps:
     - name: list-files
@@ -28,9 +28,22 @@ spec:
       script: |
         #!/usr/bin/env bash
         ls -aAlth /workspace/
-        ls -aAlth 
+        ls -aAlth
         ls -aAlth $(resources.inputs.docker-source.path)
         echo $(resources.outputs.builtImage.url)
+
+    - name: build-and-push
+      image: gcr.io/kaniko-project/executor:v0.16.0
+      env:
+        - name: "DOCKER_CONFIG"
+          value: "/tekton/home/.docker/"
+      command:
+        - /kaniko/executor
+      args:
+        - -v=debug
+        - --dockerfile=$(params.pathToDockerFile)
+        - --destination=$(resources.outputs.builtImage.url)
+        - --context=$(params.pathToContext)
 
     - name: deploy
       image: registry.cn-beijing.aliyuncs.com/acs-sample/jenkins-slave-kubectl:1.11.5
@@ -39,4 +52,4 @@ spec:
           echo "inside and trying params.path2context"
           cd $(params.pathToContext)
           ls -aAlth
-          kubectl apply -f deploy.yaml -f service.yaml -f ingress.yaml -n test
+          #kubectl apply -f deploy.yaml -f service.yaml -f ingress.yaml -n test

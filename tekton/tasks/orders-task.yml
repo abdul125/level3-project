@@ -1,26 +1,26 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: frontend-task
+  name: orders-task
   namespace: tekton-pipelines
 spec:
   params:
     - name: pathToDockerFile
       type: string
       description: The path to the dockerfile to build
-      default: $(resources.inputs.docker-source.path)/Dockerfile
+      default: $(resources.inputs.docker-source.path)/docker/orders/Dockerfile
     - name: pathToContext
       type: string
       description: |
         The build context used by Kaniko
         (https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts)
-      default: $(resources.inputs.docker-source.path)
+      default: $(resources.inputs.docker-source.path)/docker/orders
   resources:
     inputs:
-      - name: frontend-dockerfile
+      - name: orders-dockerfile
         type: git
     outputs:
-      - name: frontend-image
+      - name: orders-image
         type: image
   steps:
     - name: list-files
