@@ -1,0 +1,30 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: frontend
+spec:
+  resources:
+    inputs:
+      - name: repo
+        type: git
+  steps:
+    - name: list-files-in-frontend
+      image: ubuntu
+      script: |
+        #!/usr/bin/env bash
+        echo "in workspace this is ********frontEnd Task************** "
+        ls -aAlth /workspace/
+        echo "in /ws/repo"
+        ls -aAlth /workspace/repo
+    - name: build-and-push
+      image: gcr.io/kaniko-project/executor:v0.16.0
+      env:
+        - name: "DOCKER_CONFIG"
+          value: "/tekton/home/.docker/"
+      command:
+        - /kaniko/executor
+      args:
+        - -v=debug
+        - --dockerfile=/workspace/repo/front-end/Dockerfile # mayber it requires only /shipping/Dockerfile
+        - --destination=abdul125/aa:fe
+        - --context=/workspace/repo/front-end #/workspace/repo/src
