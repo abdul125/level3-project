@@ -1,11 +1,12 @@
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:
-  name: git-resource
+  name: level3-project
+  namespace: tekton-pipelines
 spec:
   type: git 
   params:
     - name: revision
-      value: master
+      value: main
     - name: url
-      value: https://github.com/microservices-demo
+      value: https://github.com/abdul125/level3-project
