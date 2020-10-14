@@ -1,54 +1,33 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: shipping-task
+  name: shipping
   namespace: tekton-pipelines
 spec:
   params:
-    - name: pathToDockerFile
+    - name: shipping
       type: string
-      description: The path to the dockerfile to build
-      default: $(resources.inputs.docker-source.path)/docker/shipping/Dockerfile
-    - name: pathToContext
-      type: string
-      description: |
-        The build context used by Kaniko
-        (https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts)
-      default: $(resources.inputs.docker-source.path)/docker/shipping
+      default: /workspace/repo/microservices/shipping
   resources:
     inputs:
-      - name: shipping-dockerfile
+      - name: repo
         type: git
-    outputs:
-      - name: shipping-image
-        type: image
   steps:
     - name: list-files
       image: ubuntu
       script: |
         #!/usr/bin/env bash
-        ls -aAlth /workspace/
-        ls -aAlth 
-        ls -aAlth $(resources.inputs.docker-source.path)
-        echo $(resources.outputs.builtImage.url)
+        ls -aAlth /workspace/repo
+        ls -aAlth $(params.shipping)
+        find $(params.shipping)
+        echo $(params.shipping)
     - name: build-and-push
-      image: gcr.io/kaniko-project/executor:v0.16.0
+      image: gcr.io/kaniko-project/executor:v0.19.0
       env:
-        - name: "DOCKER_CONFIG"
-          value: "/tekton/home/.docker/"
+        - name: DOCKER_CONFIG
+          value: /tekton/home/.docker
       command:
         - /kaniko/executor
-      args:
-        - -v=debug
-        - --dockerfile=$(params.pathToDockerFile)
-        - --destination=$(resources.outputs.builtImage.url)
-        - --context=$(params.pathToContext)
-
-    - name: deploy
-      image: registry.cn-beijing.aliyuncs.com/acs-sample/jenkins-slave-kubectl:1.11.5
-      script: |
-        #!/usr/bin/env bash
-          echo "inside and trying params.path2context"
-          cd $(params.pathToContext)
-          ls -aAlth
-          kubectl apply -f deploy.yaml -f service.yaml -f ingress.yaml -n test
+        - --dockerfile=$(params.shipping)/Dockerfile
+        - --context=$(params.shipping)
+        - --destination=abdul125/aa:shp-l3

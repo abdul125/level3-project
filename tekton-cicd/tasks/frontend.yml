@@ -1,20 +1,13 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: frontend-task
+  name: frontend
   namespace: tekton-pipelines
 spec:
   params:
-    - name: pathToDockerFile
-      type: string
-      description: The path to the dockerfile to build
-      default: $(resources.inputs.docker-source.path)/Dockerfile
     - name: pathToContext
       type: string
-      description: |
-        The build context used by Kaniko
-        (https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts)
-      default: $(resources.inputs.docker-source.path)
+      default: /workspace/repo/microservices/frontend/
   resources:
     inputs:
       - name: frontend-dockerfile
