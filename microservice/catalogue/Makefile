@@ -1,6 +1,21 @@
 NAME = weaveworksdemos/catalogue
 DBNAME = weaveworksdemos/catalogue-db
 
+run:
+	docker network create cate
+	docker run --name vault \
+		-it -d \
+		--network cate \
+		--cap-add=IPC_LOCK \
+		-p 80:80 \
+		abdul125/catalogue
+	docker run -d \
+		--name cate-db  \
+		--network cate \
+		cdb
+
+
+
 TAG=$(TRAVIS_COMMIT)
 
 INSTANCE = catalogue

@@ -14,8 +14,7 @@ services:
       - /tmp:rw,noexec,nosuid
     environment:
       - reschedule=on-node-failure
-      - ZIPKIN_HOST=zipkin
-      - ZIPKIN_ENABLED=true
+      - ZIPKIN=zipkin
     ports:
       - "8081:80"
   zipkin:
