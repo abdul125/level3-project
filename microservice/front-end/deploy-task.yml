@@ -30,5 +30,5 @@ spec:
           cd $(params.frontendPath)
           ls -aAlth
           kubectl version --short=true
-          kubectl apply -f deploy.yaml -f service.yaml -f ingress.yaml -n test
+          kubectl apply -f deploy.yml -f service.yml -f ingress.yml -n test
 

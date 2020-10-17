@@ -13,15 +13,6 @@ spec:
       - name: repo
         type: git
   steps:
-    - name: list-files
-      image: ubuntu
-      script: |
-        #!/usr/bin/env bash
-        ls -aAlth /workspace/
-        ls -aAlth $(params.frontendPath)
-        ls -aAlth $(params.frontendPath)
-        echo $(params.frontendPath)
-
     - name: build-and-push
       image: gcr.io/kaniko-project/executor:v0.16.0
       env:
@@ -32,5 +23,5 @@ spec:
       args:
         - -v=debug
         - --dockerfile=$(params.frontendPath)/Dockerfile
-        - --destination=abdul125/frontend:tekton
+        - --destination=abdul125/frontend
         - --context=$(params.frontendPath)
