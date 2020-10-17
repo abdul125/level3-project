@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: build-frontend
+  name: deploy-frontend
   namespace: tekton-pipelines
 spec:
   params:
@@ -27,7 +27,7 @@ spec:
       script: |
         #!/usr/bin/env bash
           echo "inside and trying params.path2context"
-          cd $(params.frontendPath)
+          cd $(params.frontendPath)/deploy
           ls -aAlth
           kubectl version --short=true
           kubectl apply -f deploy.yaml -f service.yaml -f ingress.yaml -n test

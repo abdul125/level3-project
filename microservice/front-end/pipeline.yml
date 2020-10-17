@@ -1,36 +1,24 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: test-build-push
+  name: frontend-pipeline
 spec:
   resources:
     - name: repo
       type: git
   tasks:
     # build docker image
-    - name: test
+    - name: build-frontend
       taskRef:
         name: test
       resources:
         inputs:
           - name: repo
             resource: repo
-
-    # unit test
-    - name: build-and-push
-      taskRef:
-        name: build-and-push
-      runAfter:
-        - test
-      resources:
-        inputs:
-          - name: repo
-            resource: repo
-
     # deploy to test namespace
-    - name: build-and-push
+    - name: deploy-frontend
       taskRef:
-        name: build-and-push
+        name: deploy-frontend
       runAfter:
         - test
       resources:

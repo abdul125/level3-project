@@ -1,3 +1,9 @@
+
+build-frontend:
+	kubectl apply -f front-end/build-task.yml
+	kubectl apply -f front-end/deploy-task.yml
+	kubectl apply -f front-end/pipeline.yml
+
 pull:
 	docker pull abdul125/frontend:1
 	docker pull abdul125/user:1
