@@ -1,0 +1,34 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: build-frontend
+  namespace: tekton-pipelines
+spec:
+  params:
+    - name: frontendPath
+      type: string
+      default: /workspace/repo/microservice/front-end
+  resources:
+    inputs:
+      - name: repo
+        type: git
+  steps:
+    - name: list-files
+      image: ubuntu
+      script: |
+        #!/usr/bin/env bash
+        ls -aAlth /workspace/
+        ls -aAlth $(params.frontendPath)
+        ls -aAlth $(params.frontendPath)
+        echo $(params.frontendPath)
+
+    - name: deploy
+      image: bryandollery/terraform-packer-aws-alpine
+      script: |
+        #!/usr/bin/env bash
+          echo "inside and trying params.path2context"
+          cd $(params.frontendPath)
+          ls -aAlth
+          kubectl version --short=true
+          kubectl apply -f deploy.yaml -f service.yaml -f ingress.yaml -n test
+
