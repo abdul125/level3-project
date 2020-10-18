@@ -1,4 +1,3 @@
-
 apply:
 	kubectl apply -f resource/
 	kubectl apply -f tasks/frontend.yml -f tasks/shipping.yml
