@@ -1,0 +1,13 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: queue-master-pr
+  namespace: tekton-pipelines
+spec:
+  serviceAccountName: tekton-sa
+  pipelineRef:
+    name: queue-master-pipeline
+  resources:
+  - name: repo
+    resourceRef:
+      name: level3-project

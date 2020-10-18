@@ -1,0 +1,13 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: payment-pr
+  namespace: tekton-pipelines
+spec:
+  serviceAccountName: tekton-sa
+  pipelineRef:
+    name: payment-pipeline
+  resources:
+  - name: repo
+    resourceRef:
+      name: level3-project

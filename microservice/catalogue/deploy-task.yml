@@ -1,13 +1,13 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: build-frontend
+  name: build-catalogue
   namespace: tekton-pipelines
 spec:
   params:
     - name: folderPath
       type: string
-      default: /workspace/repo/microservice/front-end
+      default: /workspace/repo/microservice/catalogue
   resources:
     inputs:
       - name: repo
@@ -17,9 +17,7 @@ spec:
       image: bryandollery/terraform-packer-aws-alpine
       script: |
         #!/usr/bin/env bash
-          echo "inside script"
+          echo "inside deploy script"
           cd $(params.folderPath)
           ls -aAlth
-          kubectl version --short=true
-          kubectl apply -f deploy.yml -f service.yml -f ingress.yml -n test
-
+          kubectl apply -f deploy.yml -f service.yml -n test

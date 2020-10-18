@@ -1,13 +1,13 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: build-frontend
+  name: build-shipping
   namespace: tekton-pipelines
 spec:
   params:
     - name: folderPath
       type: string
-      default: /workspace/repo/microservice/front-end 
+      default: /workspace/repo/microservice/shipping
   resources:
     inputs:
       - name: repo
@@ -23,5 +23,5 @@ spec:
       args:
         - -v=debug
         - --dockerfile=$(params.folderPath)/Dockerfile
-        - --destination=abdul125/front-end:1
+        - --destination=abdul125/shipping:1
         - --context=$(params.folderPath)

@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: orders-pr
+spec:
+  serviceAccountName: tekton-sa
+  pipelineRef:
+    name: orders-pipeline
+  resources:
+  - name: repo
+    resourceRef:
+      name: level3-project

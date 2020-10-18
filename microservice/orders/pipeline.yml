@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: frontend-pipeline
+  name: orders-pipeline
   namespace: tekton-pipelines
 spec:
   resources:
@@ -10,27 +10,22 @@ spec:
   tasks:
 
     # build docker image
-    - name: build-frontend
+    - name: build-orders
       taskRef:
-        name: build-frontend
+        name: build-orders
       resources:
         inputs:
           - name: repo
             resource: repo
-
-    # to-do unit-testing 
 
     # deploy to test namespace
-    - name: deploy-frontend
+    - name: deploy-orders
       taskRef:
-        name: deploy-frontend
+        name: deploy-orders
       runAfter:
-        - build-frontend
+        - build-orders
       resources:
         inputs:
           - name: repo
             resource: repo
 
-    # to-do integration testing
-    
-    # to-do deploy to prod namespace
