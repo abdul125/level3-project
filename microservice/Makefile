@@ -3,6 +3,7 @@ build-frontend:
 	kubectl apply -f front-end/build-task.yml
 	kubectl apply -f front-end/deploy-task.yml
 	kubectl apply -f front-end/pipeline.yml
+	kubectl apply -f front-end/pipeline-run.yml
 
 delete-frontend:
 	
