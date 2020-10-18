@@ -6,11 +6,6 @@ metadata:
   namespace: tekton-pipelines
 spec:
   serviceAccountName: tekton-sa
-=======
-  name: pr-frontend
-spec:
-  serviceAccountName: abdul
->>>>>>> 479b607dc4e482fa500f0a93955dbaa74dfa4913
   pipelineRef:
     name: frontend-pipeline
   resources:

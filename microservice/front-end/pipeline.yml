@@ -2,10 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
   name: frontend-pipeline
-<<<<<<< HEAD
   namespace: tekton-pipelines
-=======
->>>>>>> 479b607dc4e482fa500f0a93955dbaa74dfa4913
 spec:
   resources:
     - name: repo
@@ -20,12 +17,9 @@ spec:
         inputs:
           - name: repo
             resource: repo
-<<<<<<< HEAD
 
     # to-do unit-testing 
 
-=======
->>>>>>> 479b607dc4e482fa500f0a93955dbaa74dfa4913
     # deploy to test namespace
     - name: deploy-frontend
       taskRef:
