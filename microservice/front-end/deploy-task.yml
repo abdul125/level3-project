@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: build-frontend
+  name: deploy-frontend
   namespace: tekton-pipelines
 spec:
   params:
@@ -17,8 +17,13 @@ spec:
       image: bryandollery/terraform-packer-aws-alpine
       script: |
         #!/usr/bin/env bash
+<<<<<<< HEAD
           echo "inside script"
           cd $(params.folderPath)
+=======
+          echo "inside and trying params.path2context"
+          cd $(params.frontendPath)/deploy
+>>>>>>> 479b607dc4e482fa500f0a93955dbaa74dfa4913
           ls -aAlth
           kubectl version --short=true
           kubectl apply -f deploy.yml -f service.yml -f ingress.yml -n test
