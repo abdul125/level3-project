@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
-
 if [[ -z "$GROUP" ]] ; then
   echo "Cannot find GROUP env var"
   exit 1
 fi
+
+COMMIT="latest"
+echo $(basename front-end)
 
 if [[ -z "$COMMIT" ]] ; then
   echo "Cannot find COMMIT env var"
@@ -20,7 +22,7 @@ PASS=1
 REPO=${GROUP}/$(basename front-end);
 
 CID=$($DOCKER_CMD run -d --name testcontainer -p 8080:8079 ${REPO}:${COMMIT})
-
+echo $CID
 for i in 1 2 3 4 5
 do
   curl -s --head http://localhost:8080/ > /dev/null

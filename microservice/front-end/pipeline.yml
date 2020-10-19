@@ -18,7 +18,14 @@ spec:
           - name: repo
             resource: repo
 
-    # to-do unit-testing 
+    # to-do unit-testing npm scanning 
+    - name: unit-test-frontend
+      taskRef:
+        name: unit-test-frontend
+      resources:
+        inputs:
+          - name: repo
+            resource: repo
 
     # deploy to test namespace
     - name: deploy-frontend

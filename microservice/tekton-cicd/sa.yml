@@ -1,35 +1,21 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: tekton-sa
+  name: tekton-sa 
+  namespace: tekton-pipelines
 secrets:
 - name: docker-auth
 - name: git-auth
-
-
 ---
-
-kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
 metadata:
-  namespace: default
-  name: pipeline-role
-rules:
-- apiGroups: ["extensions", "apps", ""]
-  resources: ["services", "deployments", "pods"]
-  verbs: ["get", "create", "update", "patch", "list", "delete"]
-
----
-
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: pipeline-role-binding
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: pipeline-role
+  name: tekton-cluster-admin # solution 2
 subjects:
-- kind: ServiceAccount
-  name: service-account
-  namespace: default
+  - kind: ServiceAccount
+    name: tekton-sa
+    namespace: tekton-pipelines
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io

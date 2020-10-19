@@ -56,7 +56,8 @@ delete-cicd:
 
 install-dashboard:
 	echo "Dashboard: install" | tee -a output.log
-	helm install dashboard kubernetes-dashboard/kubernetes-dashboard -n dashboard -f platform/dashboard/values.yaml
+	helm install dashboard kubernetes-dashboard/kubernetes-dashboard -n dashboard
+	#helm install dashboard kubernetes-dashboard/kubernetes-dashboard -n dashboard -f platform/dashboard/values.yaml
 	kubectl patch svc dashboard-kubernetes-dashboard -n dashboard --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"}]'
 
 delete-dashboard:

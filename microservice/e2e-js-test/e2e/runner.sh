@@ -4,9 +4,12 @@ code=0
 testfile=$1
 files=$testfile
 
+echo $files
+
 if [ -z $testfile ]
 then
-  files=$(ls test/e2e/*_test.js)
+  files=$(ls *_test.js)
+  #files=$(ls test/e2e/*_test.js)
 fi
 
 for test in $files

@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: unit-test-frontend
+  namespace: tekton-pipelines
+spec:
+  params:
+    - name: folderPath
+      type: string
+      default: /workspace/repo/microservice/front-end
+  resources:
+    inputs:
+      - name: repo
+        type: git
+  steps:
+    - name: test
+      image: nodejs
+      script: |
+        #!/usr/bin/env bash
+          #echo "inside script"
+          #cd $(params.folderPath)
+          #ls -aAlth
+          npm audit fix
+          

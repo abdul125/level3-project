@@ -1,7 +1,6 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-<<<<<<< HEAD
   name: frontend-pr
   namespace: tekton-pipelines
 spec:

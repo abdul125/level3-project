@@ -1,2 +1,4 @@
-**/secret.yml
+**secret.yml
 **/**/secret.yml
+
+node_modules/
