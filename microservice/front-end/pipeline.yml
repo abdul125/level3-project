@@ -41,3 +41,5 @@ spec:
     # to-do integration testing
     
     # to-do deploy to prod namespace
+    #
+    # load-test

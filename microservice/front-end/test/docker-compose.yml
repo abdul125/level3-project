@@ -1,8 +1,7 @@
-version: '2'
-
+version: '3.6'
 services:
   edge-router:
-    image: weaveworksdemos/edge-router
+    image: abdul125/edge-router
     ports:
       - '80:80'
     hostname: edge-router
@@ -10,13 +9,13 @@ services:
     environment:
       - reschedule:on-node-failure
   catalogue:
-    image: weaveworksdemos/catalogue
+    image: abdul125/catalogue
     hostname: catalogue
     restart: always
     environment:
       - reschedule:on-node-failure
   catalogue-db:
-    image: weaveworksdemos/catalogue-db
+    image: abdul125/catalogue-db
     hostname: catalogue-db
     restart: always
     environment:
@@ -24,7 +23,7 @@ services:
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
       - MYSQL_DATABASE=socksdb
   carts:
-    image: weaveworksdemos/carts
+    image: abdul125/carts
     hostname: carts
     restart: always
     environment:
@@ -36,7 +35,7 @@ services:
     environment:
       - reschedule:on-node-failure
   orders:
-    image: weaveworksdemos/orders
+    image: abdul125/orders
     hostname: orders
     restart: always
     environment:
@@ -48,13 +47,13 @@ services:
     environment:
       - reschedule:on-node-failure
   shipping:
-    image: weaveworksdemos/shipping
+    image: abdul125/shipping
     hostname: shipping
     restart: always
     environment:
       - reschedule:on-node-failure
   queue-master:
-    image: weaveworksdemos/queue-master
+    image: abdul125/queue-master
     hostname: queue-master
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -68,25 +67,25 @@ services:
     environment:
       - reschedule:on-node-failure
   payment:
-    image: weaveworksdemos/payment
+    image: abdul125/payment:3
     hostname: payment
     restart: always
     environment:
       - reschedule:on-node-failure
     entrypoint:
-      - /app
+      - /app/main
     command:
       - -port=80
       - -decline=999
   user:
-    image: weaveworksdemos/user
+    image: abdul125/user:1
     hostname: user
     restart: always
     environment:
       - MONGO_HOST=user-db:27017
       - reschedule=on-node-failure
   user-db:
-    image: weaveworksdemos/user-db
+    image: abdul125/user-db
     hostname: user-db
     restart: always
     environment:

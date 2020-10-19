@@ -1,7 +1,10 @@
-IMAGE=front-end
+IMAGE=abdul125/$(basename front-end)
 DOCKER_IFLAG := $(if $(GITHUB_ACTIONS),"-i","-it")
 
 .PHONY: test coverage
+
+build:
+	docker build -t $(IMAGE):n .
 
 up: compose test-image deps server
 
@@ -58,10 +61,11 @@ e2e: test-image
 		-it                    \
 		--network test_default \
 		-v $$PWD:/usr/src/app  \
-		$(IMAGE) /usr/src/app/test/e2e/runner.sh
+		$(IMAGE) bash /usr/src/app/test/e2e/runner.sh
 
 kill-compose:
 	@docker-compose -f test/docker-compose.yml down
 
 kill-server:
 	@if [ $$(docker ps -a -q -f name=$(IMAGE) | wc -l) -ge 1 ]; then docker rm -f $(IMAGE); fi
+

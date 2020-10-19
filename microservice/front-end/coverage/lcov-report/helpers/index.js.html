@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for helpers/index.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">helpers/</a> index.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">64.86% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>24/37</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">22.22% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>4/18</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">70% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>7/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">63.89% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>23/36</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">(function (){
+  'use strict';
+&nbsp;
+  var request = require("request");
+  var helpers = {};
+&nbsp;
+  /* Public: errorHandler is a middleware that handles your errors
+   *
+   * Example:
+   *
+   * var app = express();
+   * app.use(helpers.errorHandler);
+   * */
+&nbsp;
+  helpers.errorHandler = function(err, req, res, next) {
+    var ret = {
+      message: err.message,
+      error:   err
+    };
+    res.
+      status(err.status || 500).
+      send(ret);
+  };
+&nbsp;
+  helpers.sessionMiddleware = <span class="fstat-no" title="function not covered" >function(err, req, res, next) {</span>
+<span class="cstat-no" title="statement not covered" >    if(!req.cookies.logged_in) {</span>
+<span class="cstat-no" title="statement not covered" >      res.session.customerId = null;</span>
+    }
+  };
+&nbsp;
+  /* Responds with the given body and status 200 OK  */
+  helpers.respondSuccessBody = function(res, body) {
+    helpers.respondStatusBody(res, 200, body);
+  }
+&nbsp;
+  /* Public: responds with the given body and status
+   *
+   * res        - response object to use as output
+   * statusCode - the HTTP status code to set to the response
+   * body       - (string) the body to yield to the response
+   */
+  helpers.respondStatusBody = function(res, statusCode, body) {
+    res.writeHeader(statusCode);
+    res.write(body);
+    res.end();
+  }
+&nbsp;
+  /* Responds with the given statusCode */
+  helpers.respondStatus = function(res, statusCode) {
+    res.writeHeader(statusCode);
+    res.end();
+  }
+&nbsp;
+  /* Rewrites and redirects any url that doesn't end with a slash. */
+  helpers.rewriteSlash = <span class="fstat-no" title="function not covered" >function(req, res, next) {</span>
+<span class="cstat-no" title="statement not covered" >   if(req.url.substr(-1) == '/' &amp;&amp; req.url.length &gt; 1)</span>
+<span class="cstat-no" title="statement not covered" >       res.redirect(301, req.url.slice(0, -1));</span>
+   else
+<span class="cstat-no" title="statement not covered" >       next();</span>
+  }
+&nbsp;
+  /* Public: performs an HTTP GET request to the given URL
+   *
+   * url  - the URL where the external service can be reached out
+   * res  - the response object where the external service's output will be yield
+   * next - callback to be invoked in case of error. If there actually is an error
+   *        this function will be called, passing the error object as an argument
+   *
+   * Examples:
+   *
+   * app.get("/users", function(req, res) {
+   *   helpers.simpleHttpRequest("http://api.example.org/users", res, function(err) {
+   *     res.send({ error: err });
+   *     res.end();
+   *   });
+   * });
+   */
+  helpers.simpleHttpRequest = function(url, res, next) {
+    request.get(url, function(error, response, body) {
+      if (error) return next(error);
+      helpers.respondSuccessBody(res, body);
+    }.bind({res: res}));
+  }
+&nbsp;
+  /* TODO: Add documentation */
+  helpers.getCustomerId = <span class="fstat-no" title="function not covered" >function(req, env) {</span>
+    // Check if logged in. Get customer Id
+<span class="cstat-no" title="statement not covered" >    var logged_in = req.cookies.logged_in;</span>
+&nbsp;
+    // TODO REMOVE THIS, SECURITY RISK
+<span class="cstat-no" title="statement not covered" >    if (env == "development" &amp;&amp; req.query.custId != null) {</span>
+<span class="cstat-no" title="statement not covered" >      return req.query.custId;</span>
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (!logged_in) {</span>
+<span class="cstat-no" title="statement not covered" >      if (!req.session.id) {</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error("User not logged in.");</span>
+      }
+      // Use Session ID instead
+<span class="cstat-no" title="statement not covered" >      return req.session.id;</span>
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return req.session.customerId;</span>
+  }
+  module.exports = helpers;
+}());
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Oct 19 2020 18:00:21 GMT+0000 (UTC)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>
