@@ -30,10 +30,10 @@ var (
 
 var (
 	HTTPLatency = stdprometheus.NewHistogramVec(stdprometheus.HistogramOpts{
-		Name:    "http_request_duration_seconds",
+		Name:    "request_duration_seconds",
 		Help:    "Time (in seconds) spent serving HTTP requests.",
 		Buckets: stdprometheus.DefBuckets,
-	}, []string{"method", "path", "status_code", "isWS"})
+	}, []string{"method", "route", "status_code", "isWS"})
 )
 
 const (

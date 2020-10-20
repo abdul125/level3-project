@@ -1,7 +1,7 @@
-NAME = abdul125/user
-DBNAME = abdul125/user-db
+NAME = weaveworksdemos/user
+DBNAME = weaveworksdemos/user-db
 INSTANCE = user
-TESTDB = abdul125userdb
+TESTDB = weaveworkstestuserdb
 OPENAPI = $(INSTANCE)-testopenapi
 GROUP = weaveworksdemos
 
@@ -20,8 +20,8 @@ rm-deps:
 	rm -rf vendor
 
 test:
-	docker build -t $(INSTANCE)-test -f ./Dockerfile-test .
-	docker run --rm -it $(INSTANCE)-test /bin/sh -c 'glide novendor| xargs go test -v'
+	@docker build -t $(INSTANCE)-test -f ./Dockerfile-test .
+	@docker run --rm -it $(INSTANCE)-test /bin/sh -c 'glide novendor| xargs go test -v'
 
 cover:
 	@glide novendor|xargs go test -v -covermode=count
