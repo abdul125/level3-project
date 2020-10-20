@@ -13,12 +13,19 @@ spec:
       - name: repo
         type: git
   steps:
-    - name: test
-      image: nodejs
+    - name: 
+      image: bryandollery/terraform-packer-aws-alpine
       script: |
         #!/usr/bin/env bash
-          #echo "inside script"
-          #cd $(params.folderPath)
-          #ls -aAlth
-          npm audit fix
-          
+        cd $(params.folderPath)
+        make test
+      volumeMounts:
+        - name: docker-socket
+          mountPath: /var/run/docker.sock
+
+  # As an implementation detail, this Task mounts the host's daemon socket.
+  volumes:
+    - name: docker-socket
+      hostPath:
+        path: /var/run/docker.sock
+        type: Socket
