@@ -1,5 +1,5 @@
-NAME = weaveworksdemos/catalogue
-DBNAME = weaveworksdemos/catalogue-db
+NAME = abdul125/catalogue
+DBNAME = abdul125/catalogue-db
 
 run:
 	docker network create cate
@@ -28,7 +28,7 @@ release:
 	docker build -t $(NAME) -f ./docker/catalogue/Dockerfile .
 
 test: 
-	GROUP=weaveworksdemos COMMIT=test ./scripts/build.sh
+	GROUP=abdul125 COMMIT=test ./scripts/build.sh
 	./test/test.sh unit.py
 	./test/test.sh container.py --tag $(TAG)
 

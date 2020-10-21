@@ -1,13 +1,21 @@
-NAME = weaveworksdemos/user
-DBNAME = weaveworksdemos/user-db
+NAME = abdul125/user
+DBNAME = abdul125/user-db
 INSTANCE = user
-TESTDB = weaveworkstestuserdb
+TESTDB = abdul125-userdb
 OPENAPI = $(INSTANCE)-testopenapi
-GROUP = weaveworksdemos
+GROUP = abdul125
 
 TAG=$(TRAVIS_COMMIT)
 
 default: docker
+
+build:
+	@docker build -t $(NAME) -f docker/user/Dockerfile-release .
+	@docker build -t $(DBNAME) -f docker/user-db/docker/user-db/.
+build-db:
+	@docker build -t $(DBNAME) -f docker/user-db/Dockerfile docker/user-db/
+run:
+	@docker run --rm -p 8083:80 abdul125/user
 
 
 pre: 
