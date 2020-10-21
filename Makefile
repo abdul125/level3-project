@@ -1,6 +1,6 @@
 .PHONY: up down init cluster-up install uninstall logs repos namespaces cluster-down clean provision
 
-up: cluster-up init level3
+up: cluster-up init platform
 
 down: cluster-down
 
@@ -20,8 +20,8 @@ cluster-up:
 	    --k3s-server-arg '--no-deploy=traefik' \
 	    --agents 3
 
-init: logs repos namespaces install-cicd
-platform: install-service-mesh install-ingress install-logging install-monitoring install-secrets
+init: logs repos namespaces
+platform: install-cicd install-service-mesh install-secrets install-ingress install-logging install-monitoring
 deplatform: delete-service-mesh delete-ingress delete-logging delete-monitoring delete-secrets
 
 logs:
@@ -47,7 +47,6 @@ install-cicd:
 	kubectl apply -f https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
 	kubectl apply -f https://storage.googleapis.com/tekton-releases/dashboard/latest/tekton-dashboard-release.yaml
 	kubectl patch svc tekton-dashboard -n tekton-pipelines --type='json' -p '[{"op":"replace", "path":"/spec/type", "value":"NodePort"}]'
-	kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/master/task/git-clone/0.2/git-clone.yaml
 	kubectl apply -f https://storage.googleapis.com/tekton-releases/triggers/latest/release.yaml
 
 
@@ -66,8 +65,6 @@ install-dashboard:
 delete-dashboard:
 	echo "Dashboard: delete" | tee -a output.log
 	helm delete -n dashboard dashboard 2>/dev/null | true
-
-level3: install-secrets install-monitoring install-logging
 
 install-service-mesh:
 	echo "Service-Mesh: install" | tee -a output.log

@@ -17,16 +17,6 @@ spec:
         #inputs:
           #- name: repo
             #resource: repo
-
-    # to-do unit-testing npm scanning 
-    - name: unit-test-frontend
-      taskRef:
-        name: unit-test-frontend
-      resources:
-        inputs:
-          - name: repo
-            resource: repo
-
     # deploy to test namespace
     #- name: deploy-frontend
       #taskRef:
@@ -38,8 +28,14 @@ spec:
           #- name: repo
             #resource: repo
 
-    # to-do integration testing
-    
+    # to-do unit-testing npm scanning 
+    - name: unit-test-frontend
+      taskRef:
+        name: unit-test-frontend
+      resources:
+        inputs:
+          - name: repo
+            resource: repo
+
     # to-do deploy to prod namespace
-    #
-    # load-test
+

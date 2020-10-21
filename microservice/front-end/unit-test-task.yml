@@ -18,7 +18,8 @@ spec:
       script: |
         #!/usr/bin/env bash
         cd $(params.folderPath)
-        make test
+        ls -aAthl
+        make build install test
       volumeMounts:
         - name: docker-socket
           mountPath: /var/run/docker.sock
