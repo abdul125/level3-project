@@ -5,7 +5,7 @@ build:
 
 install:
 	#docker run -it --rm -v "$$(pwd)":/app -w /app node4 npm install
-	docker run -v "$$(pwd)":/app -w /app node4 npm install
+	docker run -v "$$(pwd)":/app node4 npm install
 
 test:
 	#docker run -it --rm -v "$$(pwd)":/app -w /app node4 mocha test.js
