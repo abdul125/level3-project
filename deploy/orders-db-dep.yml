@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 
+  name: orders-db
   labels:
-    app: orders
-    type: 
+    app: orders-db
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: orders
+      app: orders-db
   template:
     metadata:
       labels:
-        app: orders
+        app: orders-db
     spec:
       containers:
-      - name: orders
-        image: abdul125/orders
+      - name: orders-db
+        image: mongo
         ports:
-        - containerPort: 
+        - name: mongo
+          containerPort: 27017

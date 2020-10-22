@@ -2,7 +2,6 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: socks-ingress
-  namespace: test
   annotations:
     ingress.kubernetes.io/ssl-redirect: "false"
 spec:

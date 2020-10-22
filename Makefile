@@ -21,7 +21,7 @@ cluster-up:
 	    --agents 3
 
 init: logs repos namespaces
-platform: install-cicd install-service-mesh install-secrets install-ingress install-logging install-monitoring
+platform: install-cicd install-service-mesh install-secrets install-logging install-monitoring install-ingress
 deplatform: delete-service-mesh delete-ingress delete-logging delete-monitoring delete-secrets
 
 logs:

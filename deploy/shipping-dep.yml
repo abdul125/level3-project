@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shipping
+  labels:
+    app: shipping
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shipping
+  template:
+    metadata:
+      labels:
+        app: shipping
+    spec:
+      containers:
+      - name: shipping
+        image: abdul125/shipping
+        env:
+         - name: ZIPKIN
+           value: zipkin.jaeger.svc.cluster.local
+         - name: JAVA_OPTS
+           value: -Xms64m -Xmx128m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom
+        ports:
+        - containerPort: 80

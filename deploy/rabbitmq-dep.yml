@@ -1,22 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 
+  name: rabbitmq
   labels:
-    app: shipping
-    type: 
+    app: rabbitmq
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: shipping
+      app: rabbitmq
   template:
     metadata:
       labels:
-        app: shipping
+        app: rabbitmq
     spec:
       containers:
-      - name: shipping
-        image: abdul125/shipping
+      - name: rabbitmq
+        image: rabbitmq:3.6.8
         ports:
-        - containerPort: 
+        - containerPort: 5672

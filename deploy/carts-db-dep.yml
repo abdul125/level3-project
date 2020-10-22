@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: catalogue
+  name: carts-db
   labels:
-    app: catalogue
-    type: catalogue
+    app: carts-db
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: catalogue
+      app: carts-db
   template:
     metadata:
       labels:
-        app: catalogue
+        app: carts-db
     spec:
       containers:
-      - name: user
-        image: abdul125/catalogue:1
+      - name: carts-db
+        image: mongo
         ports:
-        - containerPort: 
+        - name: mongo
+          containerPort: 27017

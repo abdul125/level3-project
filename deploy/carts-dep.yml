@@ -1,10 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 
+  name: carts
   labels:
     app: carts
-    type: 
 spec:
   replicas: 1
   selector:
@@ -19,4 +18,9 @@ spec:
       - name: carts
         image: abdul125/carts
         ports:
-        - containerPort: 
+         - containerPort: 80
+        env:
+         - name: ZIPKIN
+           value: zipkin.jaeger.svc.cluster.local
+         - name: JAVA_OPTS
+           value: -Xms64m -Xmx128m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom

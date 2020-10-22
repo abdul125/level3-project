@@ -4,7 +4,6 @@ metadata:
   name: user
   labels:
     app: user
-    type: user
 spec:
   replicas: 1
   selector:
@@ -17,6 +16,9 @@ spec:
     spec:
       containers:
       - name: user
-        image: abdul125/user:1
+        image: abdul125/user
         ports:
-        - containerPort: 8084
+        - containerPort: 80
+        env:
+        - name: MONGO_HOST
+          value: user-db:27017

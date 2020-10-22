@@ -4,7 +4,6 @@ metadata:
   name: carts-db
   labels:
     app: carts-db
-  namespace: test
 spec:
   replicas: 1
   selector:
@@ -21,35 +20,15 @@ spec:
         ports:
         - name: mongo
           containerPort: 27017
-        securityContext:
-          capabilities:
-            drop:
-              - all
-            add:
-              - CHOWN
-              - SETGID
-              - SETUID
-          readOnlyRootFilesystem: true
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp-volume
-      volumes:
-        - name: tmp-volume
-          emptyDir:
-            medium: Memory
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: carts-db
   labels:
-    name: carts-db
-  namespace: test
+    app: carts-db
 spec:
   ports:
-    # the port that this service should serve on
   - port: 27017
     targetPort: 27017
   selector:
@@ -61,7 +40,6 @@ metadata:
   name: carts
   labels:
     app: carts
-  namespace: test
 spec:
   replicas: 1
   selector:
@@ -74,7 +52,7 @@ spec:
     spec:
       containers:
       - name: carts
-        image: weaveworksdemos/carts:0.4.8
+        image: abdul125/carts
         ports:
          - containerPort: 80
         env:
@@ -82,24 +60,6 @@ spec:
            value: zipkin.jaeger.svc.cluster.local
          - name: JAVA_OPTS
            value: -Xms64m -Xmx128m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 10001
-          capabilities:
-            drop:
-              - all
-            add:
-              - NET_BIND_SERVICE
-          readOnlyRootFilesystem: true
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp-volume
-      volumes:
-        - name: tmp-volume
-          emptyDir:
-            medium: Memory
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -107,10 +67,8 @@ metadata:
   name: carts
   labels:
     app: carts
-  namespace: test
 spec:
   ports:
-    # the port that this service should serve on
   - port: 80
     targetPort: 80
   selector:
@@ -122,7 +80,6 @@ metadata:
   name: catalogue-db
   labels:
     app: catalogue-db
-  namespace: test
 spec:
   replicas: 1
   selector:
@@ -135,7 +92,7 @@ spec:
     spec:
       containers:
       - name: catalogue-db
-        image: weaveworksdemos/catalogue-db:0.3.0
+        image: abdul125/catalogue-db
         env:
           - name: MYSQL_ROOT_PASSWORD
             value: fake_password
@@ -144,8 +101,6 @@ spec:
         ports:
         - name: mysql
           containerPort: 3306
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -153,10 +108,8 @@ metadata:
   name: catalogue-db
   labels:
     app: catalogue-db
-  namespace: test
 spec:
   ports:
-    # the port that this service should serve on
   - port: 3306
     targetPort: 3306
   selector:
@@ -168,7 +121,6 @@ metadata:
   name: catalogue
   labels:
     app: catalogue
-  namespace: test
 spec:
   replicas: 1
   selector:
@@ -181,20 +133,9 @@ spec:
     spec:
       containers:
       - name: catalogue
-        image: weaveworksdemos/catalogue:0.3.5
+        image: abdul125/catalogue
         ports:
         - containerPort: 80
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 10001
-          capabilities:
-            drop:
-              - all
-            add:
-              - NET_BIND_SERVICE
-          readOnlyRootFilesystem: true
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -202,10 +143,8 @@ metadata:
   name: catalogue
   labels:
     app: catalogue
-  namespace: test
 spec:
   ports:
-    # the port that this service should serve on
   - port: 80
     targetPort: 80
   selector:
@@ -215,7 +154,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: front-end
-  namespace: test
 spec:
   replicas: 1
   selector:
@@ -228,22 +166,13 @@ spec:
     spec:
       containers:
       - name: front-end
-        image: weaveworksdemos/front-end:0.3.12
+        image: abdul125/front-end
         resources:
           requests:
             cpu: 100m
             memory: 100Mi
         ports:
         - containerPort: 8079
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 10001
-          capabilities:
-            drop:
-              - all
-          readOnlyRootFilesystem: true
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -251,7 +180,6 @@ metadata:
   name: front-end
   labels:
     app: front-end
-  namespace: test
 spec:
   type: NodePort
   ports:
@@ -267,7 +195,6 @@ metadata:
   name: orders-db
   labels:
     app: orders-db
-  namespace: test
 spec:
   replicas: 1
   selector:
@@ -284,24 +211,6 @@ spec:
         ports:
         - name: mongo
           containerPort: 27017
-        securityContext:
-          capabilities:
-            drop:
-              - all
-            add:
-              - CHOWN
-              - SETGID
-              - SETUID
-          readOnlyRootFilesystem: true
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp-volume
-      volumes:
-        - name: tmp-volume
-          emptyDir:
-            medium: Memory
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -309,10 +218,8 @@ metadata:
   name: orders-db
   labels:
     app: orders-db
-  namespace: test
 spec:
   ports:
-    # the port that this service should serve on
   - port: 27017
     targetPort: 27017
   selector:
@@ -324,7 +231,6 @@ metadata:
   name: orders
   labels:
     app: orders
-  namespace: test
 spec:
   replicas: 1
   selector:
@@ -337,7 +243,7 @@ spec:
     spec:
       containers:
       - name: orders
-        image: weaveworksdemos/orders:0.4.7
+        image: abdul125/orders
         env:
          - name: ZIPKIN
            value: zipkin.jaeger.svc.cluster.local
@@ -345,24 +251,6 @@ spec:
            value: -Xms64m -Xmx128m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom
         ports:
         - containerPort: 80
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 10001
-          capabilities:
-            drop:
-              - all
-            add:
-              - NET_BIND_SERVICE
-          readOnlyRootFilesystem: true
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp-volume
-      volumes:
-        - name: tmp-volume
-          emptyDir:
-            medium: Memory
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -370,10 +258,8 @@ metadata:
   name: orders
   labels:
     app: orders
-  namespace: test
 spec:
   ports:
-    # the port that this service should serve on
   - port: 80
     targetPort: 80
   selector:
@@ -385,7 +271,6 @@ metadata:
   name: payment
   labels:
     app: payment
-  namespace: test
 spec:
   replicas: 1
   selector:
@@ -398,20 +283,9 @@ spec:
     spec:
       containers:
       - name: payment
-        image: abdul125/payment:1  #weaveworksdemos/payment:0.4.3
+        image: abdul125/payment
         ports:
         - containerPort: 80
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 10001
-          capabilities:
-            drop:
-              - all
-            add:
-              - NET_BIND_SERVICE
-          readOnlyRootFilesystem: true
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -419,10 +293,8 @@ metadata:
   name: payment
   labels:
     app: payment
-  namespace: test
 spec:
   ports:
-    # the port that this service should serve on
   - port: 80
     targetPort: 80
   selector:
@@ -434,7 +306,6 @@ metadata:
   name: queue-master
   labels:
     app: queue-master
-  namespace: test
 spec:
   replicas: 1
   selector:
@@ -447,11 +318,9 @@ spec:
     spec:
       containers:
       - name: queue-master
-        image: weaveworksdemos/queue-master:0.3.1
+        image: abdul125/queue-master
         ports:
         - containerPort: 80
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -461,10 +330,8 @@ metadata:
     app: queue-master
   annotations:
     prometheus.io/path: "/prometheus"
-  namespace: test
 spec:
   ports:
-    # the port that this service should serve on
   - port: 80
     targetPort: 80
   selector:
@@ -476,7 +343,6 @@ metadata:
   name: rabbitmq
   labels:
     app: rabbitmq
-  namespace: test
 spec:
   replicas: 1
   selector:
@@ -492,18 +358,6 @@ spec:
         image: rabbitmq:3.6.8
         ports:
         - containerPort: 5672
-        securityContext:
-          capabilities:
-            drop:
-              - all
-            add:
-              - CHOWN
-              - SETGID
-              - SETUID
-              - DAC_OVERRIDE
-          readOnlyRootFilesystem: true
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -511,10 +365,8 @@ metadata:
   name: rabbitmq
   labels:
     app: rabbitmq
-  namespace: test
 spec:
   ports:
-    # the port that this service should serve on
   - port: 5672
     targetPort: 5672
   selector:
@@ -526,7 +378,6 @@ metadata:
   name: shipping
   labels:
     app: shipping
-  namespace: test
 spec:
   replicas: 1
   selector:
@@ -539,7 +390,7 @@ spec:
     spec:
       containers:
       - name: shipping
-        image: weaveworksdemos/shipping:0.4.8
+        image: abdul125/shipping
         env:
          - name: ZIPKIN
            value: zipkin.jaeger.svc.cluster.local
@@ -547,24 +398,6 @@ spec:
            value: -Xms64m -Xmx128m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom
         ports:
         - containerPort: 80
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 10001
-          capabilities:
-            drop:
-              - all
-            add:
-              - NET_BIND_SERVICE
-          readOnlyRootFilesystem: true
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp-volume
-      volumes:
-        - name: tmp-volume
-          emptyDir:
-            medium: Memory
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -572,10 +405,8 @@ metadata:
   name: shipping
   labels:
     app: shipping
-  namespace: test
 spec:
   ports:
-    # the port that this service should serve on
   - port: 80
     targetPort: 80
   selector:
@@ -587,7 +418,6 @@ metadata:
   name: user-db
   labels:
     app: user-db
-  namespace: test
 spec:
   replicas: 1
   selector:
@@ -600,28 +430,10 @@ spec:
     spec:
       containers:
       - name: user-db
-        image: weaveworksdemos/user-db:0.4.0
+        image: abdul125/user-db
         ports:
         - name: mongo
           containerPort: 27017
-        securityContext:
-          capabilities:
-            drop:
-              - all
-            add:
-              - CHOWN
-              - SETGID
-              - SETUID
-          readOnlyRootFilesystem: true
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp-volume
-      volumes:
-        - name: tmp-volume
-          emptyDir:
-            medium: Memory
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -629,10 +441,8 @@ metadata:
   name: user-db
   labels:
     app: user-db
-  namespace: test
 spec:
   ports:
-    # the port that this service should serve on
   - port: 27017
     targetPort: 27017
   selector:
@@ -644,7 +454,6 @@ metadata:
   name: user
   labels:
     app: user
-  namespace: test
 spec:
   replicas: 1
   selector:
@@ -657,23 +466,12 @@ spec:
     spec:
       containers:
       - name: user
-        image: weaveworksdemos/user:0.4.7
+        image: abdul125/user
         ports:
         - containerPort: 80
         env:
         - name: MONGO_HOST
           value: user-db:27017
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 10001
-          capabilities:
-            drop:
-              - all
-            add:
-              - NET_BIND_SERVICE
-          readOnlyRootFilesystem: true
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -681,12 +479,9 @@ metadata:
   name: user
   labels:
     app: user
-  namespace: test
 spec:
   ports:
-    # the port that this service should serve on
   - port: 80
     targetPort: 80
   selector:
     app: user
-

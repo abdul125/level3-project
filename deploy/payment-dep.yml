@@ -1,22 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: payment
   labels:
-    app: frontend
-    type: frontend
+    app: payment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: payment
   template:
     metadata:
       labels:
-        app: frontend
+        app: payment
     spec:
       containers:
-      - name: frontend
-        image: abdul125/frontend:1
+      - name: payment
+        image: abdul125/payment
         ports:
-        - containerPort: 8079 
+        - containerPort: 80

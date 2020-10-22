@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 
+  name: user-db
   labels:
-    app: queue-master
-    type: 
+    app: user-db
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: queue-master
+      app: user-db
   template:
     metadata:
       labels:
-        app: queue-master
+        app: user-db
     spec:
       containers:
-      - name: queue-master
-        image: abdul125/queue-master
+      - name: user-db
+        image: abdul125/user-db
         ports:
-        - containerPort: 
+        - name: mongo
+          containerPort: 27017

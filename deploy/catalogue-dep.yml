@@ -1,22 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 
+  name: catalogue
   labels:
-    app: payment
-    type: 
+    app: catalogue
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: payment
+      app: catalogue
   template:
     metadata:
       labels:
-        app: payment
+        app: catalogue
     spec:
       containers:
-      - name: payment
-        image: abdul125/payment
+      - name: catalogue
+        image: abdul125/catalogue
         ports:
-        - containerPort: 
+        - containerPort: 80
