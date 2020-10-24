@@ -20,10 +20,10 @@ spec:
     description: Name (reference) of the image to build.
   - name: DOCKERFILE
     description: Path to the Dockerfile to build.
-    default: /docker/catalogue-db/Dockerfile
+    default: ./docker/catalogue-db/Dockerfile
   - name: CONTEXT
     description: The build context used by Kaniko.
-    default: /docker/catalogue-db
+    default: ./docker/catalogue-db
   - name: EXTRA_ARGS
     default: ""
   - name: BUILDER_IMAGE
@@ -43,9 +43,9 @@ spec:
     image: ubuntu
     script: |
       pwd 
-      ls -aAth
-      echo "in Dockerfile path"
-      ls -aAthl $(params.DOCKERFILE)
+      ls -aAthl
+      echo "find...."
+      find
 
   - name: build-and-push
     workingDir: $(workspaces.source.path)/microservice/catalogue
@@ -54,7 +54,6 @@ spec:
     - name: DOCKER_CONFIG
       value: /tekton/home/.docker
     command:
-    - -v=debug
     - /kaniko/executor
     - $(params.EXTRA_ARGS)
     - --dockerfile=$(params.DOCKERFILE)

@@ -5,6 +5,15 @@ build-tasks:
 rm-tasks:
 	kubectl delete -f tasks/
 
+ls:
+	tkn t ls
+	tkn pr ls
+pr:
+	tkn pr logs
+
+rm-all:
+	kubectl delete -f .
+
 catalogue-db:
 	kubectl apply -f run-catalogue-db-pipeline.yml
 
