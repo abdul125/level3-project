@@ -8,10 +8,8 @@ spec:
   - name: shared-workspace
 
   params:
+  - name: db-image
   - name: image
-    description: reference of the image to build
-  - name: ns
-    default: "test"
 
   tasks:
   - name: fetch-repository
@@ -28,7 +26,7 @@ spec:
     - name: deleteExisting
       value: "true"
 
-  - name: kaniko
+  - name: build-catalogue
     taskRef:
       name: build-catalogue
     runAfter:
@@ -37,17 +35,21 @@ spec:
     - name: source
       workspace: shared-workspace
     params:
+    - name: DB-IMAGE
+      value: $(params.db-image)
+    - name: EXTRA_ARGS
+      value: "--skip-tls-verify"
     - name: IMAGE
       value: $(params.image)
     - name: EXTRA_ARGS
       value: "--skip-tls-verify"
-
+ 
   - name: verify-digest
     runAfter:
-    - kaniko
+    - build-catalogue
     params:
     - name: digest
-      value: $(tasks.kaniko.results.IMAGE-DIGEST)
+      value: $(tasks.build-catalogue.results.IMAGE-DIGEST)
     taskSpec:
       params:
       - name: digest
@@ -56,12 +58,11 @@ spec:
         image: ubuntu
         script: |
           echo $(params.digest)
-          case .$(params.digest) in
-            ".sha"*) exit 0 ;;
+          case .$(params.digest) in ".sha"*) exit 0 ;;
             *)       echo "Digest value is not correct" && exit 1 ;;
-          esac
 
-  - name: deploy-test-task
+
+  - name: deploy-to-test
     taskRef:
       name: deploy-catalogue
     runAfter:
@@ -71,19 +72,35 @@ spec:
       workspace: shared-workspace
     params: 
     - name: namespace
-      value: $(params.ns)
+      value: "test"
+
+  ## unit-testing
+
+  - name: deploy-to-production
+    taskRef:
+      name: deploy-catalogue
+    runAfter:
+      - deploy-to-test  # !important put unit-test; just 4 testing
+    workspaces:
+      - name: source
+        workspace: shared-workspace
+    params: 
+    - name: namespace
+      value: "prod"
 
 ---
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: catalogue-pipelinerunner
+  name: run-catalogue-pipeline
   namespace: tekton-pipelines
 spec:
   serviceAccountName: tekton-sa
   pipelineRef:
     name: catalogue-pipeline
   params:
+  - name: db-image
+    value: abdul125/catalogue-db:test
   - name: image
     value: abdul125/catalogue:test
   workspaces:

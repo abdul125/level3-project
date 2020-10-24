@@ -1,17 +1,15 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: catalogue-db-pipeline
+  name: user-pipeline
   namespace: tekton-pipelines
 spec:
   workspaces:
   - name: shared-workspace
 
   params:
-  - name: image
-    description: reference of the image to build
-  - name: ns
-    default: "test"
+  - name: user-image
+  - name: user-db-image
 
   tasks:
   - name: fetch-repository
@@ -28,9 +26,9 @@ spec:
     - name: deleteExisting
       value: "true"
 
-  - name: kaniko
+  - name: build-user-db
     taskRef:
-      name: build-catalogue-db
+      name: build-user-db
     runAfter:
     - fetch-repository
     workspaces:
@@ -38,13 +36,47 @@ spec:
       workspace: shared-workspace
     params:
     - name: IMAGE
-      value: $(params.image)
+      value: $(params.user-db-image)
     - name: EXTRA_ARGS
       value: "--skip-tls-verify"
 
+  - name: verify-digest-db
+    runAfter:
+    - build-user-db
+    params:
+    - name: digest
+      value: $(tasks.build-user-db.results.IMAGE-DIGEST)
+    taskSpec:
+      params:
+      - name: digest
+      steps:
+      - name: bash
+        image: ubuntu
+        script: |
+          echo $(params.digest)
+          case .$(params.digest) in
+            ".sha"*) exit 0 ;;
+            *)       echo "Digest value is not correct" && exit 1 ;;
+          esac
+
+  - name: build-user
+    taskRef:
+      name: build-user
+    runAfter:
+    - verify-digest-db
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    params:
+    - name: IMAGE
+      value: $(params.user-image)
+    - name: EXTRA_ARGS
+      value: "--skip-tls-verify"
+
+
   - name: verify-digest
     runAfter:
-    - kaniko
+    - build-user
     params:
     - name: digest
       value: $(tasks.kaniko.results.IMAGE-DIGEST)
@@ -61,9 +93,9 @@ spec:
             *)       echo "Digest value is not correct" && exit 1 ;;
           esac
 
-  - name: deploy-test-task
+  - name: deploy-to-test
     taskRef:
-      name: deploy-catalogue-db
+      name: deploy-user
     runAfter:
     - verify-digest
     workspaces:
@@ -71,22 +103,40 @@ spec:
       workspace: shared-workspace
     params: 
     - name: namespace
-      value: $(params.ns)
+      value: "test"
+
+      # unit-test
+
+  - name: deploy-to-production
+      taskRef:
+        name: deploy-user
+      runAfter:
+      - deploy-to-test
+      workspaces:
+      - name: source
+        workspace: shared-workspace
+      params: 
+      - name: namespace
+        value: "prod"
 
 ---
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: catalogue-pipeline-runner
+  name: run-user-pipeline
   namespace: tekton-pipelines
 spec:
   serviceAccountName: tekton-sa
   pipelineRef:
-    name: catalogue-db-pipeline
+    name: run-user-pipeline
   params:
-  - name: image
-    value: abdul125/catalogue-db:test
+  - name: user-db-image
+    value: abdul125/user-db:test
+  - name: user-image
+    value: abdul125/user:test
+
   workspaces:
   - name: shared-workspace
     persistentvolumeclaim:
       claimName: kaniko-source-pvc
+
