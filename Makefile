@@ -21,7 +21,7 @@ cluster-up:
 	    --agents 3
 
 init: logs repos namespaces
-platform: install-cicd install-service-mesh install-secrets install-logging install-monitoring install-ingress
+platform: install-ingress install-cicd install-service-mesh install-secrets install-logging install-monitoring
 deplatform: delete-service-mesh delete-ingress delete-logging delete-monitoring delete-secrets
 
 logs:
@@ -70,7 +70,7 @@ delete-dashboard:
 
 install-service-mesh:
 	echo "Service-Mesh: install" | tee -a output.log
-	helm install consul hashicorp/consul -n service-mesh -f platform/service-mesh/values.yaml | tee -a output.log
+	helm install consul hashicorp/consul -n service-mesh #-f platform/service-mesh/values.yaml | tee -a output.log
 
 delete-service-mesh:
 	echo "Service-Mesh: delete" | tee -a output.log
