@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: kaniko-test-pipeline
+  name: catalogue-pipeline
   namespace: tekton-pipelines
 spec:
   workspaces:
@@ -77,17 +77,16 @@ spec:
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: catalogue-pipeline-runner
+  name: catalogue-pipelinerunner
   namespace: tekton-pipelines
 spec:
   serviceAccountName: tekton-sa
   pipelineRef:
-    name: kaniko-test-pipeline
+    name: catalogue-pipeline
   params:
   - name: image
-    value: abdul125/catalogue:tekton
+    value: abdul125/catalogue:test
   workspaces:
   - name: shared-workspace
     persistentvolumeclaim:
       claimName: kaniko-source-pvc
-

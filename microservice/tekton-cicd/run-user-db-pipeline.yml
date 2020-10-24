@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: kaniko-test-pipeline
+  name: user-db-pipeline
   namespace: tekton-pipelines
 spec:
   workspaces:
@@ -9,7 +9,7 @@ spec:
 
   params:
   - name: image
-    description: reference of the image to build
+    description: pass the image name
   - name: ns
     default: "test"
 
@@ -30,7 +30,7 @@ spec:
 
   - name: kaniko
     taskRef:
-      name: build-frontend
+      name: build-user-db
     runAfter:
     - fetch-repository
     workspaces:
@@ -63,9 +63,9 @@ spec:
 
   - name: deploy-test-task
     taskRef:
-      name: deploy-frontend
+      name: deploy-user-db
     runAfter:
-    - kaniko
+    - verify-digest
     workspaces:
     - name: source
       workspace: shared-workspace
@@ -77,15 +77,15 @@ spec:
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: pipeline-run
+  name: user-db-pipelinerunner
   namespace: tekton-pipelines
 spec:
   serviceAccountName: tekton-sa
   pipelineRef:
-    name: kaniko-test-pipeline
+    name: user-db-pipeline
   params:
   - name: image
-    value: abdul125/front-end:pl
+    value: abdul125/user-db:t
   workspaces:
   - name: shared-workspace
     persistentvolumeclaim:

@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: kaniko-test-pipeline
+  name: frontend-pipeline
   namespace: tekton-pipelines
 spec:
   workspaces:
@@ -65,7 +65,7 @@ spec:
     taskRef:
       name: deploy-frontend
     runAfter:
-    - kaniko
+    - verify-digest
     workspaces:
     - name: source
       workspace: shared-workspace
@@ -82,10 +82,10 @@ metadata:
 spec:
   serviceAccountName: tekton-sa
   pipelineRef:
-    name: kaniko-test-pipeline
+    name: frontend-pipeline
   params:
   - name: image
-    value: abdul125/front-end:pl
+    value: abdul125/front-end:test
   workspaces:
   - name: shared-workspace
     persistentvolumeclaim:
