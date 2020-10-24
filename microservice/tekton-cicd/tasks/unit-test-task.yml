@@ -1,0 +1,32 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: unit-test-frontend
+  namespace: tekton-pipelines
+spec:
+  params:
+    - name: folderPath
+      type: string
+      default: /workspace/repo/microservice/front-end
+  resources:
+    inputs:
+      - name: repo
+        type: git
+  steps:
+    - name: 
+      image: bryandollery/terraform-packer-aws-alpine
+      script: |
+        #!/usr/bin/env bash
+        cd $(params.folderPath)
+        ls -aAthl
+        make build install test
+      volumeMounts:
+        - name: docker-socket
+          mountPath: /var/run/docker.sock
+
+  # As an implementation detail, this Task mounts the host's daemon socket.
+  volumes:
+    - name: docker-socket
+      hostPath:
+        path: /var/run/docker.sock
+        type: Socket

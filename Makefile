@@ -70,7 +70,8 @@ delete-dashboard:
 
 install-service-mesh:
 	echo "Service-Mesh: install" | tee -a output.log
-	helm install consul hashicorp/consul -n service-mesh #-f platform/service-mesh/values.yaml | tee -a output.log
+	helm install consul hashicorp/consul -n service-mesh | tee -a output.log
+	#-f platform/service-mesh/values.yaml | tee -a output.log
 
 delete-service-mesh:
 	echo "Service-Mesh: delete" | tee -a output.log
