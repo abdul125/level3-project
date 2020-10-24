@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: build-catalogue-db
+  name: build-user-db
   namespace: tekton-pipelines
   labels:
     app.kubernetes.io/version: "0.1"
@@ -20,10 +20,10 @@ spec:
     description: Name (reference) of the image to build.
   - name: DOCKERFILE
     description: Path to the Dockerfile to build.
-    default: /docker/catalogue-db/Dockerfile
+    default: docker/user-db/Dockerfile
   - name: CONTEXT
     description: The build context used by Kaniko.
-    default: /docker/catalogue-db
+    default: docker/user-db
   - name: EXTRA_ARGS
     default: ""
   - name: BUILDER_IMAGE
@@ -38,20 +38,9 @@ spec:
     description: Digest of the image just built.
 
   steps:
-  - name: ls
-    workingDir: $(workspaces.source.path)/docker/catalogue-db
-    image: ubuntu
-    script: |
-      pwd 
-      ls -aAth
-      echo "in Dockerfile path"
-      ls -aAthl $(params.DOCKERFILE)
-
   - name: build-and-push
-    workingDir: $(workspaces.source.path)
+    workingDir: $(workspaces.source.path)/microservice/user
     image: $(params.BUILDER_IMAGE)
-    # specifying DOCKER_CONFIG is required to allow kaniko to detect docker credential
-    # https://github.com/tektoncd/pipeline/pull/706
     env:
     - name: DOCKER_CONFIG
       value: /tekton/home/.docker
@@ -62,9 +51,6 @@ spec:
     - --context=$(params.CONTEXT)  # The user does not need to care the workspace and the source.
     - --destination=$(params.IMAGE)
     - --oci-layout-path=$(workspaces.source.path)/$(params.CONTEXT)/image-digest
-    # kaniko assumes it is running as root, which means this example fails on platforms
-    # that default to run containers as random uid (like OpenShift). Adding this securityContext
-    # makes it explicit that it needs to run as root.
     securityContext:
       runAsUser: 0
 

@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: deploy-carts
+  name: deploy-catalogue-db
   namespace: tekton-pipelines
 spec:
   params:
@@ -16,8 +16,6 @@ spec:
       image: bryandollery/terraform-packer-aws-alpine
       script: |
         #!/usr/bin/env bash
-          echo "inside script"
+          echo "inside script:"
           ls -aAlth
-          kubectl apply -f carts-db-dep.yml -f carts-db-svc.yml -f -n $(params.namespace)
-          kubectl apply -f carts-dep.yml -f carts-svc.yml -f -n $(params.namespace)
-
+          kubectl apply -f catalogue-dep.yml -f catalogue-svc.yml -n $(params.namespace)
