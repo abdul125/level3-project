@@ -9,16 +9,11 @@ ls:
 	tkn t ls
 	tkn pr ls
 pr:
-	tkn pr logs
+	tkn pr logs -f
 
 rm-all:
-	kubectl delete -f .
+	kubectl delete -f tasks/ -f .
 
-catalogue-db:
-	kubectl apply -f run-catalogue-db-pipeline.yml
-
-rm-catalogue-db:
-	kubectl apply -f run-catalogue-db-pipeline.yml
 
 catalogue:
 	kubectl apply -f run-catalogue-pipeline.yml
@@ -32,8 +27,8 @@ frontend:
 rm-frontend:
 	kubectl delete -f run-frontend-pipeline.yml
 
-user-db:
-	kubectl apply -f run-user-db-pipeline.yml
+user:
+	kubectl apply -f run-user-pipeline.yml
 
-rm-user-db:
-	kubectl delete -f run-user-db-pipeline.yml
+rm-user:
+	kubectl delete -f run-user-pipeline.yml

@@ -16,14 +16,18 @@ spec:
     building container images in environments that can't easily or
     securely run a Docker daemon, such as a standard Kubernetes cluster.
   params:
+  - name: serviceFolder
+    default: $(workspaces.source.path)/microservice/user
+  - name: DB-IMAGE
+    description: Name (reference) of the image to build.
   - name: IMAGE
     description: Name (reference) of the image to build.
   - name: DOCKERFILE
     description: Path to the Dockerfile to build.
-    default: /docker/user/Dockerfile
+    default: ./Dockerfile
   - name: CONTEXT
     description: The build context used by Kaniko.
-    default: /docker/user
+    default: ./
   - name: EXTRA_ARGS
     default: ""
   - name: BUILDER_IMAGE
@@ -38,8 +42,23 @@ spec:
     description: Digest of the image just built.
 
   steps:
-  - name: build-and-push
-    workingDir: $(workspaces.source.path)/microservice/user
+
+  - name: build-user-db-push
+    workingDir: $(params.serviceFolder)/docker/user-db
+    image: $(params.BUILDER_IMAGE)
+    env:
+    - name: DOCKER_CONFIG
+      value: /tekton/home/.docker
+    command:
+    - /kaniko/executor
+    - $(params.EXTRA_ARGS)
+    - --dockerfile=$(params.DOCKERFILE)
+    - --context=$(params.CONTEXT)
+    - --destination=$(params.DB-IMAGE)
+    - --oci-layout-path=$(workspaces.source.path)/$(params.CONTEXT)/image-digest
+
+  - name: build-user-push
+    workingDir: $(params.serviceFolder)
     image: $(params.BUILDER_IMAGE)
     env:
     - name: DOCKER_CONFIG

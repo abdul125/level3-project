@@ -58,9 +58,10 @@ spec:
         image: ubuntu
         script: |
           echo $(params.digest)
-          case .$(params.digest) in ".sha"*) exit 0 ;;
+          case .$(params.digest) in
+            ".sha"*) exit 0 ;;
             *)       echo "Digest value is not correct" && exit 1 ;;
-
+          esac
 
   - name: deploy-to-test
     taskRef:

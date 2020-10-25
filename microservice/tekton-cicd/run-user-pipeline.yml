@@ -8,8 +8,8 @@ spec:
   - name: shared-workspace
 
   params:
-  - name: user-image
-  - name: user-db-image
+  - name: db-image
+  - name: image
 
   tasks:
   - name: fetch-repository
@@ -26,50 +26,21 @@ spec:
     - name: deleteExisting
       value: "true"
 
-  - name: build-user-db
+  - name: build-user
     taskRef:
-      name: build-user-db
+      name: build-user
     runAfter:
     - fetch-repository
     workspaces:
     - name: source
       workspace: shared-workspace
     params:
-    - name: IMAGE
-      value: $(params.user-db-image)
+    - name: DB-IMAGE
+      value: $(params.db-image)
     - name: EXTRA_ARGS
       value: "--skip-tls-verify"
-
-  - name: verify-digest-db
-    runAfter:
-    - build-user-db
-    params:
-    - name: digest
-      value: $(tasks.build-user-db.results.IMAGE-DIGEST)
-    taskSpec:
-      params:
-      - name: digest
-      steps:
-      - name: bash
-        image: ubuntu
-        script: |
-          echo $(params.digest)
-          case .$(params.digest) in
-            ".sha"*) exit 0 ;;
-            *)       echo "Digest value is not correct" && exit 1 ;;
-          esac
-
-  - name: build-user
-    taskRef:
-      name: build-user
-    runAfter:
-    - verify-digest-db
-    workspaces:
-    - name: source
-      workspace: shared-workspace
-    params:
     - name: IMAGE
-      value: $(params.user-image)
+      value: $(params.image)
     - name: EXTRA_ARGS
       value: "--skip-tls-verify"
 
@@ -79,7 +50,7 @@ spec:
     - build-user
     params:
     - name: digest
-      value: $(tasks.kaniko.results.IMAGE-DIGEST)
+      value: $(tasks.build-user.results.IMAGE-DIGEST)
     taskSpec:
       params:
       - name: digest
@@ -105,17 +76,17 @@ spec:
     - name: namespace
       value: "test"
 
-      # unit-test
+#unit-test
 
   - name: deploy-to-production
-      taskRef:
-        name: deploy-user
-      runAfter:
-      - deploy-to-test
-      workspaces:
-      - name: source
-        workspace: shared-workspace
-      params: 
+    taskRef:
+      name: deploy-user
+    runAfter:
+    - deploy-to-test
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    params: 
       - name: namespace
         value: "prod"
 
@@ -128,11 +99,11 @@ metadata:
 spec:
   serviceAccountName: tekton-sa
   pipelineRef:
-    name: run-user-pipeline
+    name: user-pipeline
   params:
-  - name: user-db-image
+  - name: db-image
     value: abdul125/user-db:test
-  - name: user-image
+  - name: image
     value: abdul125/user:test
 
   workspaces:
