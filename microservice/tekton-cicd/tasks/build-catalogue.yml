@@ -41,6 +41,13 @@ spec:
     description: Digest of the image just built.
 
   steps:
+  - name: ls
+    image: ubuntu
+    workingDir: $(params.catalogueFolder)/docker/catalogue-db
+    script: |
+      #!/usr/bin/env bash
+      find
+
   - name: build-and-push-db
     workingDir: $(params.catalogueFolder)/docker/catalogue-db
     image: $(params.BUILDER_IMAGE)

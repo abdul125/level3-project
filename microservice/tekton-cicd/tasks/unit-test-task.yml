@@ -7,19 +7,17 @@ spec:
   params:
     - name: folderPath
       type: string
-      default: /workspace/repo/microservice/front-end
-  resources:
-    inputs:
-      - name: repo
-        type: git
+      #default: $(workspaces.source.path)/microservice/front-end
+  #workspaces:
+    #name: source #it does not like workspaces
   steps:
-    - name: 
+    - name: unit-test 
       image: bryandollery/terraform-packer-aws-alpine
       script: |
         #!/usr/bin/env bash
         cd $(params.folderPath)
         ls -aAthl
-        make build install test
+        make build install itself
       volumeMounts:
         - name: docker-socket
           mountPath: /var/run/docker.sock

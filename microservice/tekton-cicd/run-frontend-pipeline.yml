@@ -45,7 +45,7 @@ spec:
     - build-frontend
     params:
     - name: digest
-      value: $(tasks.kaniko.results.IMAGE-DIGEST)
+      value: $(tasks.build-frontend.results.IMAGE-DIGEST)
     taskSpec:
       params:
       - name: digest
@@ -59,7 +59,7 @@ spec:
             *)       echo "Digest value is not correct" && exit 1 ;;
           esac
 
-  - name: deploy-test-task
+  - name: deploy-to-test
     taskRef:
       name: deploy-frontend
     runAfter:
@@ -77,7 +77,7 @@ spec:
     taskRef:
       name: deploy-frontend
     runAfter:
-    - deploy-test-task
+    - deploy-to-test
     workspaces:
     - name: source
       workspace: shared-workspace
@@ -103,4 +103,3 @@ spec:
   - name: shared-workspace
     persistentvolumeclaim:
       claimName: kaniko-source-pvc
-
