@@ -1,15 +1,15 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: catalogue-pipeline
+  name: orders-pipeline
   namespace: tekton-pipelines
 spec:
   workspaces:
   - name: shared-workspace
 
   params:
-  - name: database-image
   - name: image
+    description: reference of the image to build
 
   tasks:
   - name: fetch-repository
@@ -26,25 +26,11 @@ spec:
     - name: deleteExisting
       value: "true"
 
-  - name: build-catalogue-db
+  - name: build-orders
     taskRef:
-      name: build-catalogue-db
+      name: build-orders
     runAfter:
     - fetch-repository
-    workspaces:
-    - name: source
-      workspace: shared-workspace
-    params:
-    - name: IMAGE
-      value: $(params.database-image)
-    - name: EXTRA_ARGS
-      value: "--skip-tls-verify"
-
-  - name: build-catalogue
-    taskRef:
-      name: build-catalogue
-    runAfter:
-    - fetch-repository # should it be after db?
     workspaces:
     - name: source
       workspace: shared-workspace
@@ -53,40 +39,31 @@ spec:
       value: $(params.image)
     - name: EXTRA_ARGS
       value: "--skip-tls-verify"
- 
-  - name: verify-digest-both
+
+  - name: verify-digest
     runAfter:
-    - build-catalogue
+    - build-orders
     params:
-    - name: digest-db
-      value: $(tasks.build-catalogue-db.results.IMAGE-DIGEST)
     - name: digest
-      value: $(tasks.build-catalogue.results.IMAGE-DIGEST)
+      value: $(tasks.kaniko.results.IMAGE-DIGEST)
     taskSpec:
       params:
-      - name: digest-db
       - name: digest
       steps:
       - name: bash
         image: ubuntu
         script: |
-          echo "digest-db ... "
-          echo $(params.digest-db)
-          case .$(params.digest-db) in ".sha"*) exit 0 ;;
-            *)       echo "Digest value is not correct" && exit 1 ;;
-          esac &&\
-          echo "digest ... "
           echo $(params.digest)
-          case .$(params.digest) in ".sha"*) exit 0 ;;
+          case .$(params.digest) in
+            ".sha"*) exit 0 ;;
             *)       echo "Digest value is not correct" && exit 1 ;;
           esac
 
-
   - name: deploy-to-test
     taskRef:
-      name: deploy-catalogue
+      name: deploy-orders
     runAfter:
-    - verify-digest-both
+    - verify-digest
     workspaces:
     - name: source
       workspace: shared-workspace
@@ -94,38 +71,36 @@ spec:
     - name: namespace
       value: "test"
 
-  ## unit-testing
+#  unit-test
 
   - name: deploy-to-production
     taskRef:
-      name: deploy-catalogue
+      name: deploy-orders
     runAfter:
-      - deploy-to-test  # !important put unit-test; just 4 testing
+    - deploy-to-test
     workspaces:
-      - name: source
-        workspace: shared-workspace
+    - name: source
+      workspace: shared-workspace
     params: 
     - name: namespace
       value: "prod"
-  
 
 
 ---
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: run-catalogue-pipeline
+  name: run-frontend-pipeline
   namespace: tekton-pipelines
 spec:
   serviceAccountName: tekton-sa
   pipelineRef:
-    name: catalogue-pipeline
+    name: orders-pipeline
   params:
-  - name: database-image
-    value: abdul125/catalogue-db:test
   - name: image
-    value: abdul125/catalogue:test
+    value: abdul125/orders:test
   workspaces:
   - name: shared-workspace
     persistentvolumeclaim:
       claimName: kaniko-source-pvc
+
