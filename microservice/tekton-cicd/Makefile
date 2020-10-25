@@ -32,3 +32,10 @@ user:
 
 rm-user:
 	kubectl delete -f run-user-pipeline.yml
+
+orders:
+	kubectl apply -f run-orders-pipeline.yml
+
+rm-orders:
+	kubectl delete -f run-orders-pipeline.yml
+

@@ -9,7 +9,6 @@ spec:
 
   params:
   - name: image
-    description: reference of the image to build
 
   tasks:
   - name: fetch-repository
@@ -45,7 +44,7 @@ spec:
     - build-orders
     params:
     - name: digest
-      value: $(tasks.kaniko.results.IMAGE-DIGEST)
+      value: $(tasks.build-orders.results.IMAGE-DIGEST)
     taskSpec:
       params:
       - name: digest
