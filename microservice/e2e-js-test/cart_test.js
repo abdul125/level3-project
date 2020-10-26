@@ -4,11 +4,13 @@
 
   casper.test.begin("User interacts with the cart", 1, function(test) {
     // initial load and login
-    casper.start("http://front-end:8080/", function() {
+    casper.start("localhost/", function() {
       this.clickLabel("Login");
+
+      // testing
       this.fill("#login-modal form", {
-        "username": "Eve_Berger",
-        "password": "duis"
+        "username": "a",  
+        "password": "a"
       }, true);
       this.click("#login-modal form button.btn.btn-primary");
       this.waitForText("Logged in", function() {
