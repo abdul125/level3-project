@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: deploy-user
+  namespace: tekton-pipelines
+spec:
+  params:
+    - name: namespace
+
+  workspaces:
+  - name: source
+
+  steps:
+    - name: deploy
+      workingDir: $(workspaces.source.path)/deploy
+      image: bryandollery/terraform-packer-aws-alpine
+      script: |
+        #!/usr/bin/env bash
+          echo "inside script"
+          ls -aAlth
+          kubectl apply -f user-dep.yml -f user-svc.yml -n $(params.namespace)
