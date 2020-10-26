@@ -39,7 +39,7 @@ spec:
 
   steps:
   - name: build-and-push
-    workingDir: $(workspaces.source.path)/microservice/orders
+    workingDir: $(workspaces.source.path)/microservices/orders
     image: $(params.BUILDER_IMAGE)
     # specifying DOCKER_CONFIG is required to allow kaniko to detect docker credential
     # https://github.com/tektoncd/pipeline/pull/706

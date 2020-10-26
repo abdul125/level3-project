@@ -39,7 +39,7 @@ spec:
 
   steps:
   - name: build-and-push
-    workingDir: $(workspaces.source.path)/microservice/shipping
+    workingDir: $(workspaces.source.path)/microservices/shipping
     image: $(params.BUILDER_IMAGE)
     env:
     - name: DOCKER_CONFIG

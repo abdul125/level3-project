@@ -17,7 +17,7 @@ spec:
     securely run a Docker daemon, such as a standard Kubernetes cluster.
   params:
   - name: serviceFolder
-    default: $(workspaces.source.path)/microservice/user
+    default: $(workspaces.source.path)/microservices/user
   - name: DB-IMAGE
     description: Name (reference) of the image to build.
   - name: IMAGE

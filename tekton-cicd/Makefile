@@ -14,9 +14,11 @@ ls-prod:
 
 rm-test:
 	kubectl delete all --all -n test
+	kubectl delete ingress -n test
 
 rm-prod:
 	kubectl delete all --all -n prod 
+	kubectl delete ingress -n prod
 
 rm-tasks:
 	kubectl delete -f tasks/

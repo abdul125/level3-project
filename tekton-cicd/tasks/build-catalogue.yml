@@ -17,7 +17,7 @@ spec:
     securely run a Docker daemon, such as a standard Kubernetes cluster.
   params:
   - name: catalogueFolder
-    default: $(workspaces.source.path)/microservice/catalogue
+    default: $(workspaces.source.path)/microservices/catalogue
   - name: DB-IMAGE
     description: Name (reference) of the image to build.
   - name: IMAGE
