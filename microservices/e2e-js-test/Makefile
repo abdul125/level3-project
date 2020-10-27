@@ -7,7 +7,12 @@ test:
 	docker run -it --rm -v "$$(pwd)":/app -w /app node4 mocha test.js
 
 itest:
-	docker run -it --rm -v "$$(pwd)":/app -w /app node4 casperjs test *_test.js
+	#docker run -it --rm -v "$$(pwd)":/app -w /app node4 casperjs test *_test.js catalogue_test.js
+	docker run --rm -v "$$(pwd)":/app -w /app node4 casperjs test homepage_test.js
+	docker run --rm -v "$$(pwd)":/app -w /app node4 casperjs test login_test.js
+	docker run --rm -v "$$(pwd)":/app -w /app node4 casperjs test catalogue_test.js
+	docker run --rm -v "$$(pwd)":/app -w /app node4 casperjs test cart_test.js
+	docker run --rm -v "$$(pwd)":/app -w /app node4 casperjs test checkout_test.js
 
 init:
 	docker run -it --rm -v "$$(pwd)":/app -w /app node4 npm init
