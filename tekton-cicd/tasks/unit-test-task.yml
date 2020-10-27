@@ -7,17 +7,17 @@ spec:
   params:
     - name: folderPath
       type: string
-      #default: $(workspaces.source.path)/microservice/front-end
-  #workspaces:
-    #name: source #it does not like workspaces
+      default: $(workspaces.source.path)/microservices/e2e-js-test
+  workspaces:
+    - name: source #it does not like workspaces
   steps:
     - name: unit-test 
       image: bryandollery/terraform-packer-aws-alpine
+      workingDir: $(params.folderPath)
       script: |
         #!/usr/bin/env bash
-        cd $(params.folderPath)
         ls -aAthl
-        make build install itest
+        make build install npm itest
       volumeMounts:
         - name: docker-socket
           mountPath: /var/run/docker.sock
