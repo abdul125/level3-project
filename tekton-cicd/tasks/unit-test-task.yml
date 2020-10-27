@@ -17,7 +17,7 @@ spec:
         #!/usr/bin/env bash
         cd $(params.folderPath)
         ls -aAthl
-        make build install itself
+        make build install itest
       volumeMounts:
         - name: docker-socket
           mountPath: /var/run/docker.sock
