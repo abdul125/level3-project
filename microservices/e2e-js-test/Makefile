@@ -4,7 +4,7 @@ build:
 	docker build --tag node4 .
 
 test:
-	docker run -it --rm -v "$$(pwd)":/app -w /app node4 mocha test.js
+	docker run --rm -v "$$(pwd)":/app -w /app node4 mocha test.js
 
 itest:
 	#docker run -it --rm -v "$$(pwd)":/app -w /app node4 casperjs test *_test.js catalogue_test.js
@@ -15,14 +15,14 @@ itest:
 	docker run --rm -v "$$(pwd)":/app -w /app node4 casperjs test checkout_test.js
 
 init:
-	docker run -it --rm -v "$$(pwd)":/app -w /app node4 npm init
+	docker run --rm -v "$$(pwd)":/app -w /app node4 npm init
 
 
 install:
-	docker run -it --rm -v "$$(pwd)":/app -w /app node4 npm install
+	docker run --rm -v "$$(pwd)":/app -w /app node4 npm install
 	
 npm:
-	docker run -it --rm -v "$$(pwd)":/app -w /app node4 npm install --save chrome-remote-interface chrome-launcher mocha express request body-parser sinon chai chai-http http 
+	docker run --rm -v "$$(pwd)":/app -w /app node4 npm install --save chrome-remote-interface chrome-launcher mocha express request body-parser sinon chai chai-http http 
 
 upgrade:
 	docker run -it --rm -v "$$(pwd)":/app -w /app node4 jscodeshift -t tmp/sinon-codemod/migrate-to-v5.js *.js
