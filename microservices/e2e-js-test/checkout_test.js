@@ -6,17 +6,22 @@
 
   casper.test.begin("User buys some socks", 5, function(test) {
     // initial load and login
-    casper.start("http://front-end:8080/", function() {
+    casper.start("http://15.185.194.90/", function() {
       this.clickLabel("Login");
+
+      // test if u can see the login form/dialogue
+      //test.assertVisible("#login-modal", "login form is shown");
+
+      // wait for the box to be avalable or shown
+      casper.waitUntilVisible("#login-modal", function() {
+
+      test.assertVisible("#login-modal form", "login form is shown");
       this.fill("#login-modal form", {
         "username": "Eve_Berger",
-        "password": "duis"
-      }, true);
-      this.click("#login-modal form button.btn.btn-primary");
-      this.waitForText("Logged in", function() {
-        test.comment("user logged in");
+        "password": "eve"
+      }, false);
       }, function() {
-        test.fail("login failed");
+        test.fail("login dialogue never showed up");
       }, 3000);
     });
 
@@ -65,13 +70,12 @@
 
     // actually checkout
     casper.then(function() {
+      this.click("button#orderButton");
       this.waitForText("My orders", function() {
         test.pass("user is taken to the orders page");
       }, function() {
-        console.log("dumping page screenshot as PNG")
-        var cap = casper.captureBase64("png");
-        console.log(cap);
-        console.log("DONE");
+        //console.log("dumping page screenshot as PNG"); var cap = casper.captureBase64("png");console.log(cap);
+        console.log("screenshot is commeneted out");
         test.fail("user was not taken to the orders page");
       }, 3000);
     });
