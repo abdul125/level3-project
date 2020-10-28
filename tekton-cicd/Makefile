@@ -1,4 +1,7 @@
 
+set-namespace:
+	kubectl config set-context --current --namespace=tekton-pipelines
+
 apply-tasks:
 	kubectl apply -f tasks/
 

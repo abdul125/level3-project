@@ -12,20 +12,9 @@ metadata:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: secrets
----
-apiVersion: v1
-kind: Namespace
-metadata:
   name: logging
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
   name: monitoring
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: service-mesh
-

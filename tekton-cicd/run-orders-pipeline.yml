@@ -101,5 +101,5 @@ spec:
   workspaces:
   - name: shared-workspace
     persistentvolumeclaim:
-      claimName: kaniko-source-pvc
+      claimName: orders-pvc
 
