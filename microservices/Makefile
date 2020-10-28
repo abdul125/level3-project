@@ -1,4 +1,18 @@
 
+pip:
+	kubectl apply -f pipeline.yml
+	kubectl apply -f carts/pipeline.yml
+	kubectl apply -f shipping/pipeline.yml
+	kubectl apply -f payment/pipeline.yml
+
+ls:
+	tkn tasks ls
+	tkn pr ls
+ 
+pr:
+	tkn pr logs -f
+
+
 build-frontend:
 	kubectl apply -f front-end/build-task.yml
 	kubectl apply -f front-end/unit-test-task.yml

@@ -28,3 +28,36 @@ spec:
         inputs:
           - name: repo
             resource: repo
+      params:
+      - name: namespace
+        value: "test"
+
+    # deploy to test namespace
+    - name: deploy-shipping-prod
+      taskRef:
+        name: deploy-shipping
+      runAfter:
+        - deploy-shipping
+      resources:
+        inputs:
+          - name: repo
+            resource: repo
+      params:
+      - name: namespace
+        value: "prod"
+
+
+---
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: shipping-pr
+  namespace: tekton-pipelines
+spec:
+  serviceAccountName: tekton-sa
+  pipelineRef:
+    name: shipping-pipeline
+  resources:
+  - name: repo
+    resourceRef:
+      name: level3-project

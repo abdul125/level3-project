@@ -1,61 +1,62 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: carts-pipeline
+  name: frontend-pipeline
   namespace: tekton-pipelines
 spec:
   resources:
     - name: repo
       type: git
   tasks:
-
     # build docker image
-    - name: build-carts
+    - name: build-frontend
       taskRef:
-        name: build-carts
+        name: build-frontend
       resources:
         inputs:
           - name: repo
             resource: repo
 
-    # deploy to test namespace
+    # to-do unit-testing npm scanning 
     - name: deploy-to-test
       taskRef:
-        name: deploy-carts
+        name: deploy-frontend
       runAfter:
-        - build-carts
+       - build-frontend
       resources:
         inputs:
           - name: repo
             resource: repo
-      params:
+      params: 
       - name: namespace
-        value: "test"
+        value: "test"        
 
-    - name: deploy-carts
-      taskRef:
-        name: deploy-carts
+    # to-do deploy to prod namespace
+    - name: deploy-to-production
       runAfter:
-        - deploy-to-test
+      - deploy-to-test
+      taskRef:
+        name: deploy-frontend
       resources:
         inputs:
           - name: repo
             resource: repo
-      params:
+      params: 
       - name: namespace
-        value: "prod"
+        value: "prod"  
 
 ---
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: carts-pr
+  name: frontend-pr
   namespace: tekton-pipelines
 spec:
   serviceAccountName: tekton-sa
   pipelineRef:
-    name: carts-pipeline
+    name: frontend-pipeline
   resources:
   - name: repo
     resourceRef:
       name: level3-project
+

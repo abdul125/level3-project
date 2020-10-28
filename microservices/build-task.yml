@@ -1,13 +1,13 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: build-carts
+  name: build-frontend
   namespace: tekton-pipelines
 spec:
   params:
     - name: folderPath
       type: string
-      default: /workspace/repo/microservices/carts
+      default: /workspace/repo/microservices/front-end 
   resources:
     inputs:
       - name: repo
@@ -23,5 +23,5 @@ spec:
       args:
         - -v=debug
         - --dockerfile=$(params.folderPath)/Dockerfile
-        - --destination=abdul125/carts:1t
+        - --destination=abdul125/front-end:1test
         - --context=$(params.folderPath)

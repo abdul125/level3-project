@@ -7,7 +7,8 @@ spec:
   params:
     - name: folderPath
       type: string
-      default: /workspace/repo/microservice/carts
+      default: /workspace/repo/deploy
+    - name: namespace  
   resources:
     inputs:
       - name: repo
@@ -15,9 +16,10 @@ spec:
   steps:
     - name: deploy
       image: bryandollery/terraform-packer-aws-alpine
+      workingDir: $(params.folderPath)
       script: |
         #!/usr/bin/env bash
           echo "inside and trying params.path2context"
-          cd $(params.folderPath)
           ls -aAlth
-          kubectl apply -f deploy.yml -f service.yml -n test
+          kubectl apply -f orders-db-dep.yml -f orders-db-svc.yml -n $(params.namespace) 
+          kubectl apply -f orders-dep.yml -f orders-svc.yml -n $(params.namespace)

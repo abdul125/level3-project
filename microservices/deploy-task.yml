@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: deploy-shipping
+  name: deploy-frontend
   namespace: tekton-pipelines
 spec:
   params:
@@ -9,6 +9,7 @@ spec:
       type: string
       default: /workspace/repo/deploy
     - name: namespace
+
   resources:
     inputs:
       - name: repo
@@ -19,7 +20,7 @@ spec:
       workingDir: $(params.folderPath)
       script: |
         #!/usr/bin/env bash
-          echo "inside scripts"
+          echo "inside script"
           ls -aAlth
-          kubectl apply -f rabbitmq-dep.yml -f rabbitmq-svc.yml -n $(params.namespace) 
-          kubectl apply -f shipping-dep.yml -f shipping-svc.yml -n $(params.namespace)
+          #kubectl version --short=true
+          kubectl apply -f front-end-dep.yml -f front-end-svc.yml -f ingress.yml -n $(params.namespace)

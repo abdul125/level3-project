@@ -18,13 +18,45 @@ spec:
           - name: repo
             resource: repo
 
-    # deploy to test namespace
-    - name: deploy-payment
+    - name: deploy-to-test
       taskRef:
         name: deploy-payment
       runAfter:
-        - build-payment
+      - build-payment
       resources:
         inputs:
           - name: repo
             resource: repo
+      params: 
+      - name: namespace
+        value: "test"
+
+    - name: deploy-to-prod
+      taskRef:
+        name: deploy-payment
+      runAfter:
+      - deploy-to-test
+      resources:
+        inputs:
+          - name: repo
+            resource: repo
+      params: 
+      - name: namespace
+        value: "prod"
+
+
+---
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: payment-pr
+  namespace: tekton-pipelines
+spec:
+  serviceAccountName: tekton-sa
+  pipelineRef:
+    name: payment-pipeline
+  resources:
+  - name: repo
+    resourceRef:
+      name: level3-project
+

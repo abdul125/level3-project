@@ -7,7 +7,7 @@ spec:
   params:
     - name: folderPath
       type: string
-      default: /workspace/repo/microservice/payment
+      default: /workspace/repo/microservices/payment
   resources:
     inputs:
       - name: repo
