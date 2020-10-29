@@ -1,0 +1,102 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: carts-pipeline
+  namespace: tekton-pipelines
+spec:
+  workspaces:
+  - name: shared-workspace
+
+  params:
+  - name: image
+
+  tasks:
+  - name: fetch-repository
+    taskRef:
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: shared-workspace
+    params:
+    - name: url
+      value: https://github.com/abdul125/level3-project
+    - name: subdirectory
+      value: ""
+    - name: deleteExisting
+      value: "true"
+
+  - name: build-carts
+    taskRef:
+      name: build-carts
+    runAfter:
+    - fetch-repository
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    params:
+    - name: IMAGE
+      value: $(params.image)
+    - name: EXTRA_ARGS
+      value: "--skip-tls-verify"
+
+  - name: verify-digest
+    runAfter:
+    - build-carts
+    params:
+    - name: digest
+      value: $(tasks.build-carts.results.IMAGE-DIGEST)
+    taskSpec:
+      params:
+      - name: digest
+      steps:
+      - name: bash
+        image: ubuntu
+        script: |
+          echo $(params.digest)
+          case .$(params.digest) in
+            ".sha"*) exit 0 ;;
+            *)       echo "Digest value is not correct" && exit 1 ;;
+          esac
+
+  - name: deploy-to-test
+    taskRef:
+      name: deploy-carts
+    runAfter:
+    - verify-digest
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    params:
+    - name: namespace
+      value: "test"
+
+  - name: deploy-to-production
+    taskRef:
+      name: deploy-carts
+    runAfter:
+    - deploy-to-test
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    params:
+    - name: namespace
+      value: "prod"
+
+
+---
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: run-carts-pipeline
+  namespace: tekton-pipelines
+spec:
+  serviceAccountName: tekton-sa
+  pipelineRef:
+    name: carts-pipeline
+  params:
+  - name: image
+    value: abdul125/carts:test
+  workspaces:
+  - name: shared-workspace
+    persistentvolumeclaim:
+      claimName: carts-pvc

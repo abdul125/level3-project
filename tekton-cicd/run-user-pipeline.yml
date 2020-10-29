@@ -1,0 +1,113 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: user-pipeline
+  namespace: tekton-pipelines
+spec:
+  workspaces:
+  - name: shared-workspace
+
+  params:
+  - name: db-image
+  - name: image
+
+  tasks:
+  - name: fetch-repository
+    taskRef:
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: shared-workspace
+    params:
+    - name: url
+      value: https://github.com/abdul125/level3-project
+    - name: subdirectory
+      value: ""
+    - name: deleteExisting
+      value: "true"
+
+  - name: build-user
+    taskRef:
+      name: build-user
+    runAfter:
+    - fetch-repository
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    params:
+    - name: DB-IMAGE
+      value: $(params.db-image)
+    - name: EXTRA_ARGS
+      value: "--skip-tls-verify"
+    - name: IMAGE
+      value: $(params.image)
+    - name: EXTRA_ARGS
+      value: "--skip-tls-verify"
+
+
+  - name: verify-digest
+    runAfter:
+    - build-user
+    params:
+    - name: digest
+      value: $(tasks.build-user.results.IMAGE-DIGEST)
+    taskSpec:
+      params:
+      - name: digest
+      steps:
+      - name: bash
+        image: ubuntu
+        script: |
+          echo $(params.digest)
+          case .$(params.digest) in
+            ".sha"*) exit 0 ;;
+            *)       echo "Digest value is not correct" && exit 1 ;;
+          esac
+
+  - name: deploy-to-test
+    taskRef:
+      name: deploy-user
+    runAfter:
+    - verify-digest
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    params: 
+    - name: namespace
+      value: "test"
+
+#unit-test
+
+  - name: deploy-to-production
+    taskRef:
+      name: deploy-user
+    runAfter:
+    - deploy-to-test
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    params: 
+      - name: namespace
+        value: "prod"
+
+---
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: run-user-pipeline
+  namespace: tekton-pipelines
+spec:
+  serviceAccountName: tekton-sa
+  pipelineRef:
+    name: user-pipeline
+  params:
+  - name: db-image
+    value: abdul125/user-db:test
+  - name: image
+    value: abdul125/user:test
+
+  workspaces:
+  - name: shared-workspace
+    persistentvolumeclaim:
+      claimName: user-pvc
+
