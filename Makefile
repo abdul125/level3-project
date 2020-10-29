@@ -47,13 +47,11 @@ install-cicd:
 	kubectl apply -f https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
 	kubectl apply -f https://storage.googleapis.com/tekton-releases/dashboard/latest/tekton-dashboard-release.yaml
 	kubectl patch svc tekton-dashboard -n tekton-pipelines --type='json' -p '[{"op":"replace", "path":"/spec/type", "value":"NodePort"}]'
-	kubectl apply -f platform/tekton
 
 delete-cicd:
 	echo "cicd: delete" | tee -a output.log
 	kubectl delete -f https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
 	kubectl delete -f https://storage.googleapis.com/tekton-releases/dashboard/latest/tekton-dashboard-release.yaml
-	kubectl delete -f platform/tekton
 
 install-dashboard:
 	echo "Dashboard: install" | tee -a output.log
