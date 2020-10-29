@@ -1,4 +1,14 @@
 
+create-secret: login docker-secret
+
+login:
+	docker login -u abdul125
+
+docker-secret:
+	kubectl create secret generic docker-auth -n tekton-pipelines \
+ 	--from-file=.dockerconfigjson=/home/ubuntu/.docker/config.json \
+ 	--type=kubernetes.io/dockerconfigjson
+
 set-namespace:
 	kubectl config set-context --current --namespace=tekton-pipelines
 
@@ -8,7 +18,13 @@ apply-tasks:
 
 apply-pipelines: carts catalogue frontend orders payment queue-master shipping user
 
+rm-all: rm-tasks rm-pipelines
+
 rm-pipelines: rm-carts rm-catalogue rm-frontend rm-orders rm-payment rm-queue-master rm-shipping rm-user
+
+rm-tasks:
+	kubectl delete -f pvc.yml
+	kubectl delete -f tasks
 
 ls-test:
 	kubectl get all -n test
@@ -33,10 +49,6 @@ ls:
 	tkn pr ls
 pr:
 	tkn pr logs -f
-
-rm-all:
-	kubectl delete -f tasks/ -f .
-
 
 catalogue:
 	kubectl apply -f run-catalogue-pipeline.yml
