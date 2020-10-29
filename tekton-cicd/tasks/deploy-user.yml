@@ -16,6 +16,5 @@ spec:
       image: bryandollery/terraform-packer-aws-alpine
       script: |
         #!/usr/bin/env bash
-          echo "inside script"
-          ls -aAlth
+          kubectl apply -f user-db-dep -f user-db-svc -n $(params.namespace)          
           kubectl apply -f user-dep.yml -f user-svc.yml -n $(params.namespace)

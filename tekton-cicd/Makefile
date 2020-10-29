@@ -3,6 +3,7 @@ set-namespace:
 	kubectl config set-context --current --namespace=tekton-pipelines
 
 apply-tasks:
+	kubectl apply -f pvc.yml
 	kubectl apply -f tasks/
 
 apply-pipelines: carts catalogue frontend orders payment queue-master shipping user
@@ -17,13 +18,14 @@ ls-prod:
 
 rm-test:
 	kubectl delete all --all -n test
-	kubectl delete ingress -n test
+	kubectl delete ingress socks-ingress -n test
 
 rm-prod:
 	kubectl delete all --all -n prod 
-	kubectl delete ingress -n prod
+	kubectl delete ingress socks-ingress -n prod
 
 rm-tasks:
+	kubectl delete -f pvc.yml
 	kubectl delete -f tasks/
 
 ls:

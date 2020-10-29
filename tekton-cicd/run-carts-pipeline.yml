@@ -66,11 +66,9 @@ spec:
     workspaces:
     - name: source
       workspace: shared-workspace
-    params: 
+    params:
     - name: namespace
       value: "test"
-
-#  unit-test
 
   - name: deploy-to-production
     taskRef:
@@ -80,7 +78,7 @@ spec:
     workspaces:
     - name: source
       workspace: shared-workspace
-    params: 
+    params:
     - name: namespace
       value: "prod"
 
@@ -102,4 +100,3 @@ spec:
   - name: shared-workspace
     persistentvolumeclaim:
       claimName: carts-pvc
-
