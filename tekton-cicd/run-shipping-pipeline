@@ -1,16 +1,16 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: run-carts-pipeline
+  name: run-shipping-pipeline
   namespace: tekton-pipelines
 spec:
   serviceAccountName: tekton-sa
   pipelineRef:
-    name: carts-pipeline
+    name: shipping-pipeline
   params:
   - name: image
-    value: abdul125/carts:test
+    value: abdul125/shipping:test
   workspaces:
   - name: shared-workspace
     persistentvolumeclaim:
-      claimName: carts-pvc
+      claimName: shipping-pvc

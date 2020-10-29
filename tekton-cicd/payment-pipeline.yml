@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: shipping-pipeline
+  name: payment-pipeline
   namespace: tekton-pipelines
 spec:
   workspaces:
@@ -25,9 +25,9 @@ spec:
     - name: deleteExisting
       value: "true"
 
-  - name: build-shipping
+  - name: build-payment
     taskRef:
-      name: build-shipping
+      name: build-payment
     runAfter:
     - fetch-repository
     workspaces:
@@ -41,10 +41,10 @@ spec:
 
   - name: verify-digest
     runAfter:
-    - build-shipping
+    - build-payment
     params:
     - name: digest
-      value: $(tasks.build-shipping.results.IMAGE-DIGEST)
+      value: $(tasks.build-payment.results.IMAGE-DIGEST)
     taskSpec:
       params:
       - name: digest
@@ -60,7 +60,7 @@ spec:
 
   - name: deploy-to-test
     taskRef:
-      name: deploy-shipping
+      name: deploy-payment
     runAfter:
     - verify-digest
     workspaces:
@@ -74,7 +74,7 @@ spec:
 
   - name: deploy-to-production
     taskRef:
-      name: deploy-shipping
+      name: deploy-payment
     runAfter:
     - deploy-to-test
     workspaces:
@@ -83,21 +83,3 @@ spec:
     params: 
     - name: namespace
       value: "prod"
-
----
-apiVersion: tekton.dev/v1beta1
-kind: PipelineRun
-metadata:
-  name: run-shipping-pipeline
-  namespace: tekton-pipelines
-spec:
-  serviceAccountName: tekton-sa
-  pipelineRef:
-    name: shipping-pipeline
-  params:
-  - name: image
-    value: abdul125/shipping:test
-  workspaces:
-  - name: shared-workspace
-    persistentvolumeclaim:
-      claimName: shipping-pvc

@@ -1,0 +1,85 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: shipping-pipeline
+  namespace: tekton-pipelines
+spec:
+  workspaces:
+  - name: shared-workspace
+
+  params:
+  - name: image
+
+  tasks:
+  - name: fetch-repository
+    taskRef:
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: shared-workspace
+    params:
+    - name: url
+      value: https://github.com/abdul125/level3-project
+    - name: subdirectory
+      value: ""
+    - name: deleteExisting
+      value: "true"
+
+  - name: build-shipping
+    taskRef:
+      name: build-shipping
+    runAfter:
+    - fetch-repository
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    params:
+    - name: IMAGE
+      value: $(params.image)
+    - name: EXTRA_ARGS
+      value: "--skip-tls-verify"
+
+  - name: verify-digest
+    runAfter:
+    - build-shipping
+    params:
+    - name: digest
+      value: $(tasks.build-shipping.results.IMAGE-DIGEST)
+    taskSpec:
+      params:
+      - name: digest
+      steps:
+      - name: bash
+        image: ubuntu
+        script: |
+          echo $(params.digest)
+          case .$(params.digest) in
+            ".sha"*) exit 0 ;;
+            *)       echo "Digest value is not correct" && exit 1 ;;
+          esac
+
+  - name: deploy-to-test
+    taskRef:
+      name: deploy-shipping
+    runAfter:
+    - verify-digest
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    params: 
+    - name: namespace
+      value: "test"
+
+#  unit-test
+
+  - name: deploy-to-production
+    taskRef:
+      name: deploy-shipping
+    runAfter:
+    - deploy-to-test
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    params: 
+    - name: namespace
+      value: "prod"
