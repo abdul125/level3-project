@@ -12,8 +12,9 @@ docker-secret:
 set-namespace:
 	kubectl config set-context --current --namespace=tekton-pipelines
 
+rm-all: rm-tasks rm-pipelines
+
 apply-tasks:
-	kubectl apply -f pvc.yml
 	kubectl apply -f tasks/
 
 apply-pipelines: carts catalogue frontend orders payment queue-master shipping user
@@ -23,8 +24,7 @@ rm-all: rm-tasks rm-pipelines
 rm-pipelines: rm-carts rm-catalogue rm-frontend rm-orders rm-payment rm-queue-master rm-shipping rm-user
 
 rm-tasks:
-	kubectl delete -f pvc.yml
-	kubectl delete -f tasks
+	kubectl delete -f tasks/
 
 ls-test:
 	kubectl get all -n test
@@ -34,14 +34,13 @@ ls-prod:
 
 rm-test:
 	kubectl delete all --all -n test
-	kubectl delete ingress socks-ingress -n test
+	kubectl delete ingress socks-ingress -n test || true
 
 rm-prod:
 	kubectl delete all --all -n prod 
-	kubectl delete ingress socks-ingress -n prod
+	kubectl delete ingress socks-ingress -n prod || true
 
 rm-tasks:
-	kubectl delete -f pvc.yml
 	kubectl delete -f tasks/
 
 ls:

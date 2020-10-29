@@ -21,6 +21,8 @@ spec:
         - "front-end-dep.yml"
         - "-f"
         - "front-end-svc.yml"
+        - "-f"
+        - "ingress.yml"
         - "-n"
         - "$(params.namespace)"
 
