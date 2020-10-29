@@ -1,2 +1,7 @@
-# microservices
-it containes multiple of services, tests load-test and e2e-js-test , and tekton,whcih is kubernetes-native open-source framework for creating continuous integration and delivery CI/CD
+# Microservices
+It containes all the services of sock shop application and testes one unit-test, which is in e2e-js-test and load-test.
+Below is diagram of sock-shop microservices.
+
+![Image of Yaktocat](https://www.pulumi.com/blog/getting-started-with-k8s-part3/Architecture.png)
+
+
