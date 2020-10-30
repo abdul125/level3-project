@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
   name: queue-master-pipeline
-  namespace: tekton-pipelines
+  
 spec:
   workspaces:
   - name: shared-workspace
@@ -95,7 +95,7 @@ apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
   name: run-queue-master-pipeline
-  namespace: tekton-pipelines
+  
 spec:
   serviceAccountName: tekton-sa
   pipelineRef:

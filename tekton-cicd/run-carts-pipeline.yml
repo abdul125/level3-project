@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
   name: carts-pipeline
-  namespace: tekton-pipelines
+  
 spec:
   workspaces:
   - name: shared-workspace
@@ -98,7 +98,7 @@ apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
   name: run-carts-pipeline
-  namespace: tekton-pipelines
+  
 spec:
   serviceAccountName: tekton-sa
   pipelineRef:

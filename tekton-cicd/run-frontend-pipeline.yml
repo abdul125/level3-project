@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
   name: frontend-pipeline
-  namespace: tekton-pipelines
+  
 spec:
   workspaces:
   - name: shared-workspace
@@ -97,7 +97,7 @@ apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
   name: run-frontend-pipeline
-  namespace: tekton-pipelines
+  
 spec:
   serviceAccountName: tekton-sa
   pipelineRef:
