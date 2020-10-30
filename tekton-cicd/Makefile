@@ -2,7 +2,10 @@
 up: create-secret apply-rbac apply-resource apply-tasks apply-pipelines
 
 create-secret: 
-	 resource/check
+	kubectl get secrets -n tekton-pipelines | grep docker-auth || docker login -u abdul125 && \
+    	kubectl create secret generic docker-auth -n tekton-pipelines \
+    	--from-file=.dockerconfigjson=/home/ubuntu/.docker/config.json \
+    	--type=kubernetes.io/dockerconfigjson
 
 set-namespace:
 	kubectl config set-context --current --namespace=tekton-pipelines
