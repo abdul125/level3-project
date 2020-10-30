@@ -22,8 +22,6 @@ RUN curl -Ls https://github.com/dustinblackman/phantomized/releases/download/2.1
 
 WORKDIR /e2e
 COPY . /e2e
-RUN chmod +x runner.sh
-RUN pwd
-RUN ls -aAthl
-RUN find
+#RUN ls -aAthl
+#RUN cat runner.sh
 RUN npm install
