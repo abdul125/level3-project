@@ -15,4 +15,4 @@
  1. One in the main directory which is used to setup the cluster and install tools and 
  2. the second one in the tekton-cicd to which it does build deploy and test.
  
- **for both of them use :** make up
+ **for both of them use :** make up 
