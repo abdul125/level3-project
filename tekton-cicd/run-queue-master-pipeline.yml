@@ -102,7 +102,7 @@ spec:
     name: queue-master-pipeline
   params:
   - name: image
-    value: abdul125/queue-master:test
+    value: abdul125/queue-master
   workspaces:
   - name: shared-workspace
     persistentvolumeclaim:

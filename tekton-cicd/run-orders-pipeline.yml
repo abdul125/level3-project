@@ -103,7 +103,7 @@ spec:
     name: orders-pipeline
   params:
   - name: image
-    value: abdul125/orders:test
+    value: abdul125/orders
   workspaces:
   - name: shared-workspace
     persistentvolumeclaim:

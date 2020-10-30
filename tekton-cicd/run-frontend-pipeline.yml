@@ -104,7 +104,7 @@ spec:
     name: frontend-pipeline
   params:
   - name: image
-    value: abdul125/front-end:test
+    value: abdul125/front-end
   workspaces:
   - name: shared-workspace
     persistentvolumeclaim:

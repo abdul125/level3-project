@@ -5,7 +5,7 @@ create-secret:
 	kubectl get secrets -n tekton-pipelines | grep docker-auth || docker login -u abdul125 && \
     	kubectl create secret generic docker-auth -n tekton-pipelines \
     	--from-file=.dockerconfigjson=/home/ubuntu/.docker/config.json \
-    	--type=kubernetes.io/dockerconfigjson
+    	--type=kubernetes.io/dockerconfigjson 2>/dev/null | true
 
 set-namespace:
 	kubectl config set-context --current --namespace=tekton-pipelines

@@ -105,7 +105,7 @@ spec:
     name: carts-pipeline
   params:
   - name: image
-    value: abdul125/carts:test
+    value: abdul125/carts
   workspaces:
   - name: shared-workspace
     persistentvolumeclaim:

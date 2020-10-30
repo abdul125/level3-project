@@ -103,7 +103,7 @@ spec:
     name: payment-pipeline
   params:
   - name: image
-    value: abdul125/payment:test
+    value: abdul125/payment
   workspaces:
   - name: shared-workspace
     persistentvolumeclaim:

@@ -109,9 +109,9 @@ spec:
     name: user-pipeline
   params:
   - name: db-image
-    value: abdul125/user-db:test
+    value: abdul125/user-db
   - name: image
-    value: abdul125/user:test
+    value: abdul125/user
 
   workspaces:
   - name: shared-workspace

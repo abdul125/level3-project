@@ -103,7 +103,7 @@ spec:
     name: shipping-pipeline
   params:
   - name: image
-    value: abdul125/shipping:test
+    value: abdul125/shipping
   workspaces:
   - name: shared-workspace
     persistentvolumeclaim:

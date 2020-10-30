@@ -108,9 +108,9 @@ spec:
     name: catalogue-pipeline
   params:
   - name: db-image
-    value: abdul125/catalogue-db:test
+    value: abdul125/catalogue-db
   - name: image
-    value: abdul125/catalogue:test
+    value: abdul125/catalogue
   workspaces:
   - name: shared-workspace
     persistentvolumeclaim:
