@@ -75,13 +75,20 @@ spec:
     - name: namespace
       value: "test"
 
-  ## unit-testing
+  - name: e2e-test
+    taskRef:
+      name: e2e-test
+    runAfter:
+    - deploy-to-test
+    workspaces:
+    - name: source
+      workspace: shared-workspace
 
   - name: deploy-to-production
     taskRef:
       name: deploy-catalogue
     runAfter:
-      - deploy-to-test  # !important put unit-test; just 4 testing
+      - e2e-test
     workspaces:
       - name: source
         workspace: shared-workspace
