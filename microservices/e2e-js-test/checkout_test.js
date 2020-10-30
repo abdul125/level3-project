@@ -6,7 +6,7 @@
 
   casper.test.begin("User buys some socks", 5, function(test) {
     // initial load and login
-    casper.start("http://15.185.194.90/", function() {
+    casper.start("http://front-end/", function() {
       this.clickLabel("Login");
 
       // test if u can see the login form/dialogue

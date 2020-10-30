@@ -4,7 +4,7 @@
 
   casper.test.begin("User interacts with the cart", 1, function suite(test) {
     // initial load and login
-    casper.start("http://15.185.194.90/", function() {
+    casper.start("http://front-end/", function() {
       this.clickLabel("Login");
 
       // testing
