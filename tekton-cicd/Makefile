@@ -1,5 +1,5 @@
 
-up: set-namespace create-secret apply-rbac apply-resource apply-tasks apply-pipelines
+up: create-secret apply-rbac apply-resource apply-tasks apply-pipelines
 
 create-secret: 
 	kubectl get secrets -n tekton-pipelines | grep docker-auth || docker login -u abdul125 && \
