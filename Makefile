@@ -74,9 +74,10 @@ delete-ingress:
 install-monitoring: install-prometheus install-grafana
 delete-monitoring: delete-prometheus delete-grafana
 
+
 install-prometheus:
 	echo "Monitoring: install-grafana" | tee -a output.log
-	helm install -n monitoring prometheus prometheus-community/prometheus | tee -a output.log
+	helm install -n monitoring -f platform/monitoring/prometheus-values.yaml prometheus prometheus-community/prometheus| tee -a output.log
 
 delete-prometheus:
 	echo "Monitoring: delete-prometheus" | tee -a output.log
@@ -84,7 +85,7 @@ delete-prometheus:
 
 install-grafana:
 	echo "Monitoring: install-grafana" | tee -a output.log
-	helm install grafana grafana/grafana -n monitoring --set service.type=NodePort | tee -a output.log
+	helm install grafana grafana/grafana -n monitoring -f platform/monitoring/grafana-values.yaml | tee -a output.log
 
 delete-grafana:
 	echo "Monitoring: delete-grafana" | tee -a output.log
@@ -92,11 +93,11 @@ delete-grafana:
 
 install-logging:
 	echo "Logging: install-elasticsearch" | tee -a output.log
-	helm install elasticsearch elastic/elasticsearch -n logging | tee -a output.log
+	helm install elasticsearch elastic/elasticsearch -n logging -f platform/logging/elastic-values.yaml | tee -a output.log
 	echo "Logging: install-fluent-bit" | tee -a output.log
-	helm install fluent-bit fluent/fluent-bit -n logging | tee -a output.log
+	helm install fluent-bit fluent/fluent-bit -n logging -f platform/logging/fluent-values.yaml | tee -a output.log
 	echo "Logging: install-kibana" | tee -a output.log
-	helm install kibana elastic/kibana -n logging --set service.type=NodePort | tee -a output.log
+	helm install kibana elastic/kibana -n logging -f platform/logging/kibana-values.yaml | tee -a output.log
 
 delete-logging:
 	echo "Logging: delete-elasticsearch" | tee -a output.log
