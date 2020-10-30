@@ -7,12 +7,13 @@ spec:
   workspaces:
   - name: source
   steps:
-    - name: file-explorer
-      image: ubuntu
-      script: |
-       #!/usr/bin/env bash
-       ls -aAgthl
-       find 
+    #- name: test-e2e-test
+      #image: abdul125/e2e-test
+      #command: ["/bin/sh"]
+      #args:
+        #- "find"
+        #- "ls"
+        #- "-aAthl"
 
 
     - name: e2e-test
