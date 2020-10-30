@@ -1,0 +1,25 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: e2e-test-task
+  namespace: tekton-pipelines
+spec:
+  workspaces:
+  - name: source
+  steps:
+    - name: file-explorer
+      image: ubuntu
+      script: |
+       #!/usr/bin/env bash
+       ls -aAgthl
+       find 
+
+
+    - name: e2e-test
+      image: abdul125/e2e-test
+      workingDir: $(workspaces.source.path)/microservices/e2e-js-test
+      script: |
+       #!/bin/sh
+       ls -aAthl
+       chmod +x /tests/runner.sh
+       ./runner.sh
