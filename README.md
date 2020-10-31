@@ -14,4 +14,4 @@
 
  1. One in the **main directory** which is used to setup the cluster and install packages. for this one use **make up**
     
- 2. the second one in the **tekton-cicd** to which it does build test deloy. for this one use **make set-namespace then make**
+ 2. the second one in the **tekton-cicd** to which it does build test deloy. for this one use **make set-namespace up**
