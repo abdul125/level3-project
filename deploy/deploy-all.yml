@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: carts-db
   labels:
-    app: carts-db
+    name: carts-db
 spec:
   replicas: 1
   selector:
@@ -26,7 +26,7 @@ kind: Service
 metadata:
   name: carts-db
   labels:
-    app: carts-db
+    name: carts-db
 spec:
   ports:
   - port: 27017
@@ -39,7 +39,7 @@ kind: Deployment
 metadata:
   name: carts
   labels:
-    app: carts
+    name: carts
 spec:
   replicas: 1
   selector:
@@ -66,7 +66,7 @@ kind: Service
 metadata:
   name: carts
   labels:
-    app: carts
+    name: carts
 spec:
   ports:
   - port: 80
@@ -79,7 +79,7 @@ kind: Deployment
 metadata:
   name: catalogue-db
   labels:
-    app: catalogue-db
+    name: catalogue-db
 spec:
   replicas: 1
   selector:
@@ -107,7 +107,7 @@ kind: Service
 metadata:
   name: catalogue-db
   labels:
-    app: catalogue-db
+    name: catalogue-db
 spec:
   ports:
   - port: 3306
@@ -120,7 +120,7 @@ kind: Deployment
 metadata:
   name: catalogue
   labels:
-    app: catalogue
+    name: catalogue
 spec:
   replicas: 1
   selector:
@@ -142,7 +142,7 @@ kind: Service
 metadata:
   name: catalogue
   labels:
-    app: catalogue
+    name: catalogue
 spec:
   ports:
   - port: 80
@@ -179,7 +179,7 @@ kind: Service
 metadata:
   name: front-end
   labels:
-    app: front-end
+    name: front-end
 spec:
   type: NodePort
   ports:
@@ -194,7 +194,7 @@ kind: Deployment
 metadata:
   name: orders-db
   labels:
-    app: orders-db
+    name: orders-db
 spec:
   replicas: 1
   selector:
@@ -217,7 +217,7 @@ kind: Service
 metadata:
   name: orders-db
   labels:
-    app: orders-db
+    name: orders-db
 spec:
   ports:
   - port: 27017
@@ -230,7 +230,7 @@ kind: Deployment
 metadata:
   name: orders
   labels:
-    app: orders
+    name: orders
 spec:
   replicas: 1
   selector:
@@ -257,7 +257,7 @@ kind: Service
 metadata:
   name: orders
   labels:
-    app: orders
+    name: orders
 spec:
   ports:
   - port: 80
@@ -270,7 +270,7 @@ kind: Deployment
 metadata:
   name: payment
   labels:
-    app: payment
+    name: payment
 spec:
   replicas: 1
   selector:
@@ -292,7 +292,7 @@ kind: Service
 metadata:
   name: payment
   labels:
-    app: payment
+    name: payment
 spec:
   ports:
   - port: 80
@@ -305,7 +305,7 @@ kind: Deployment
 metadata:
   name: queue-master
   labels:
-    app: queue-master
+    name: queue-master
 spec:
   replicas: 1
   selector:
@@ -327,7 +327,7 @@ kind: Service
 metadata:
   name: queue-master
   labels:
-    app: queue-master
+    name: queue-master
   annotations:
     prometheus.io/path: "/prometheus"
 spec:
@@ -342,7 +342,7 @@ kind: Deployment
 metadata:
   name: rabbitmq
   labels:
-    app: rabbitmq
+    name: rabbitmq
 spec:
   replicas: 1
   selector:
@@ -364,7 +364,7 @@ kind: Service
 metadata:
   name: rabbitmq
   labels:
-    app: rabbitmq
+    name: rabbitmq
 spec:
   ports:
   - port: 5672
@@ -377,7 +377,7 @@ kind: Deployment
 metadata:
   name: shipping
   labels:
-    app: shipping
+    name: shipping
 spec:
   replicas: 1
   selector:
@@ -404,7 +404,7 @@ kind: Service
 metadata:
   name: shipping
   labels:
-    app: shipping
+    name: shipping
 spec:
   ports:
   - port: 80
@@ -417,7 +417,7 @@ kind: Deployment
 metadata:
   name: user-db
   labels:
-    app: user-db
+    name: user-db
 spec:
   replicas: 1
   selector:
@@ -440,7 +440,7 @@ kind: Service
 metadata:
   name: user-db
   labels:
-    app: user-db
+    name: user-db
 spec:
   ports:
   - port: 27017
@@ -453,7 +453,7 @@ kind: Deployment
 metadata:
   name: user
   labels:
-    app: user
+    name: user
 spec:
   replicas: 1
   selector:
@@ -478,7 +478,7 @@ kind: Service
 metadata:
   name: user
   labels:
-    app: user
+    name: user
 spec:
   ports:
   - port: 80
