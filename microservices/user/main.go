@@ -30,10 +30,10 @@ var (
 
 var (
 	HTTPLatency = stdprometheus.NewHistogramVec(stdprometheus.HistogramOpts{
-		Name:    "request_duration_seconds",
+		Name:    "http_request_duration_seconds",
 		Help:    "Time (in seconds) spent serving HTTP requests.",
 		Buckets: stdprometheus.DefBuckets,
-	}, []string{"method", "route", "status_code", "isWS"})
+	}, []string{"method", "path", "status_code", "isWS"})
 )
 
 const (
@@ -43,7 +43,7 @@ const (
 func init() {
 	stdprometheus.MustRegister(HTTPLatency)
 	flag.StringVar(&zip, "zipkin", os.Getenv("ZIPKIN"), "Zipkin address")
-	flag.StringVar(&port, "port", "8084", "Port on which to run")
+	flag.StringVar(&port, "port", "80", "Port on which to run")
 	db.Register("mongodb", &mongodb.Mongo{})
 }
 

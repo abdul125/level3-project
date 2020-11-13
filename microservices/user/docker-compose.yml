@@ -1,8 +1,10 @@
-version: '3'
+version: '2'
+
 services:
     user:
-        build: ./
-        image: user:0.04.7
+        build:
+            context: .
+        image: weaveworksdemos/user
         hostname: user
         restart: always
         cap_drop:
@@ -16,8 +18,9 @@ services:
         ports:
             - "8080:80"
     user-db:
-        build: ./docker/user-db/
-        image: us-db:2
+        build:
+            context: ./docker/user-db/
+        image: weaveworksdemos/user-db
         hostname: user-db
         restart: always
         cap_drop:
