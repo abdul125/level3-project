@@ -78,6 +78,7 @@ spec:
     workspaces:
     - name: source
       workspace: shared-workspace
+    params:
     - name: serivceName
       value: "shipping"
 
