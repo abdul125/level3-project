@@ -83,6 +83,10 @@ spec:
     workspaces:
     - name: source
       workspace: shared-workspace
+    params:
+    - name: serivceName
+      value: "catalogue"
+
 
   - name: deploy-to-production
     taskRef:

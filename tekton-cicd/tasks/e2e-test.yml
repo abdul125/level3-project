@@ -6,15 +6,19 @@ metadata:
 spec:
   workspaces:
   - name: source
+  params:
+    - name: serivceName
   steps:
-    #- name: test-e2e-test
-      #image: abdul125/e2e-test
-      #command: ["/bin/sh"]
-      #args:
-        #- "find"
-        #- "ls"
-        #- "-aAthl"
-
+    - name: wait-for-other-pods
+      image: lachlanevenson/k8s-kubectl
+      command: ["kubectl"]
+      args:
+        - "wait"
+        - "--for=condition=ready"
+        - "pods"
+        - "-l"
+        - "name=$(params.serivceName)"
+        - "--timeout=900s"
 
     - name: e2e-test
       image: abdul125/e2e-test

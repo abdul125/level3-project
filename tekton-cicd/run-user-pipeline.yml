@@ -84,6 +84,8 @@ spec:
     workspaces:
     - name: source
       workspace: shared-workspace
+    - name: serivceName
+      value: "user"
 
   - name: deploy-to-production
     taskRef:

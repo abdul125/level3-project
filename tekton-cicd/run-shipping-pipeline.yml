@@ -78,6 +78,8 @@ spec:
     workspaces:
     - name: source
       workspace: shared-workspace
+    - name: serivceName
+      value: "shipping"
 
   - name: deploy-to-production
     taskRef:

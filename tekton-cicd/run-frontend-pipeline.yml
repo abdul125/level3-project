@@ -79,6 +79,9 @@ spec:
     workspaces:
     - name: source
       workspace: shared-workspace
+    params:
+    - name: serviceName
+      value: "front-end"
 
   - name: deploy-to-production
     taskRef:
