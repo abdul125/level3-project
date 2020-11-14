@@ -1,0 +1,25 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: deploy-carts
+  namespace: tekton-pipelines
+spec:
+  params:
+    - name: namespace
+    - name: ymlfiles
+
+
+  workspaces:
+  - name: source
+
+  steps:
+    - name: deploy
+      workingDir: $(workspaces.source.path)/deploy
+      image: lachlanevenson/k8s-kubectl
+      command: ["kubectl"]
+      args:
+        - "apply"
+        - "-f"
+        - $(params.ymlfiles)
+        - "-n"
+        - "$(params.namespace)"

@@ -1,11 +1,15 @@
 
 up: create-secret apply-rbac apply-resource apply-tasks apply-pipelines
 
-create-secret: 
-	kubectl get secrets -n tekton-pipelines | grep docker-auth || docker login -u abdul125 && \
-    	kubectl create secret generic docker-auth -n tekton-pipelines \
-    	--from-file=.dockerconfigjson=/home/ubuntu/.docker/config.json \
-    	--type=kubernetes.io/dockerconfigjson 2>/dev/null | true
+create-secret: login docker-secret
+
+login:
+	docker login -u abdul125
+
+docker-secret:
+	kubectl create secret generic docker-auth -n tekton-pipelines \
+ 	--from-file=.dockerconfigjson=/home/ubuntu/.docker/config.json \
+ 	--type=kubernetes.io/dockerconfigjson || true
 
 set-namespace:
 	kubectl config set-context --current --namespace=tekton-pipelines
@@ -26,7 +30,7 @@ rm-all: rm-tasks rm-pipelines
 rm-pipelines: rm-carts rm-catalogue rm-frontend rm-orders rm-payment rm-queue-master rm-shipping rm-user
 
 rm-tasks:
-	kubectl delete -f tasks/ || true
+	kubectl delete -f tasks/
 
 ls-test:
 	kubectl get all -n test
