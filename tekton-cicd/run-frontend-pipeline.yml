@@ -83,7 +83,79 @@ spec:
     - name: serviceName
       value: "front-end"
 
-  - name: deploy-to-production
+  - name: deploy-catalogue-to-production
+    taskRef:
+      name: deploy-catalogue
+    runAfter:
+    - e2e-test
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    params:
+    - name: namespace
+      value: "prod"
+
+  - name: deploy-carts-to-production
+    taskRef:
+      name: deploy-carts
+    runAfter:
+    - e2e-test
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    params:
+    - name: namespace
+      value: "prod"
+
+  - name: deploy-orders-to-production
+    taskRef:
+      name: deploy-orders
+    runAfter:
+    - e2e-test
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    params:
+    - name: namespace
+      value: "prod"
+
+  - name: deploy-queue-master-to-production
+    taskRef:
+      name: deploy-queue-master
+    runAfter:
+    - e2e-test
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    params:
+    - name: namespace
+      value: "prod"
+
+  - name: deploy-shipping-to-production
+    taskRef:
+      name: deploy-shipping
+    runAfter:
+    - e2e-test
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    params:
+    - name: namespace
+      value: "prod"
+
+  - name: deploy-user-to-production
+    taskRef:
+      name: deploy-user
+    runAfter:
+    - e2e-test
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    params:
+    - name: namespace
+      value: "prod"
+
+  - name: deploy-frontend-to-production
     taskRef:
       name: deploy-frontend
     runAfter:
@@ -91,10 +163,21 @@ spec:
     workspaces:
     - name: source
       workspace: shared-workspace
-    params: 
+    params:
     - name: namespace
       value: "prod"
 
+  - name: deploy-payment-to-production
+    taskRef:
+      name: deploy-payment
+    runAfter:
+    - e2e-test
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    params:
+    - name: namespace
+      value: "prod"
 ---
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
