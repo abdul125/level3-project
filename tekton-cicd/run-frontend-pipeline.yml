@@ -93,6 +93,8 @@ spec:
       workspace: shared-workspace
     params:
     - name: namespace
+      value: "tekton-pipelines"
+    - name: namespace
       value: "prod"
 
   - name: deploy-carts-to-production
