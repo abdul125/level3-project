@@ -7,6 +7,7 @@ spec:
   workspaces:
   - name: source
   params:
+    - name: namespace
     - name: service-name
   steps:
     - name: wait-for-other-pods
@@ -14,6 +15,8 @@ spec:
       command: ["kubectl"]
       args:
         - "wait"
+        - "--namespace"
+        - "$(params.namespace)"
         - "--for=condition=ready"
         - "pods"
         - "-l"
