@@ -7,7 +7,7 @@ spec:
   workspaces:
   - name: source
   params:
-    - name: serivceName
+    - name: service-name
   steps:
     - name: wait-for-other-pods
       image: lachlanevenson/k8s-kubectl
