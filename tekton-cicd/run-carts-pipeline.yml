@@ -80,7 +80,7 @@ spec:
       workspace: shared-workspace
     params:
     - name: service-name
-      value: "front-end"
+      value: "carts"
 
   - name: deploy-catalogue-to-production
     taskRef:
