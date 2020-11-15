@@ -84,7 +84,7 @@ spec:
     - name: source
       workspace: shared-workspace
     params:
-    - name: serivceName
+    - name: service-name
       value: "catalogue"
 
   - name: deploy-catalogue-to-production
