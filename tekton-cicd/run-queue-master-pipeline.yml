@@ -78,7 +78,7 @@ spec:
     - name: source
       workspace: shared-workspace
     params:
-    - name: serivceName
+    - name: service-name
       value: "queue-master"
 
   - name: deploy-catalogue-to-production
