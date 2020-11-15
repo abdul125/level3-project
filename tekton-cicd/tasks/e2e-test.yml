@@ -17,7 +17,7 @@ spec:
         - "--for=condition=ready"
         - "pods"
         - "-l"
-        - "name=$(params.serivceName)"
+        - "name=$(params.service-name)"
         - "--timeout=900s"
 
     - name: e2e-test
