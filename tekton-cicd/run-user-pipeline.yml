@@ -85,6 +85,8 @@ spec:
     - name: source
       workspace: shared-workspace
     params:
+    - name: namespace
+      value: "tekton-pipelines"
     - name: service-name
       value: "user"
 
