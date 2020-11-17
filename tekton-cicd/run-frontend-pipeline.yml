@@ -81,7 +81,7 @@ spec:
       workspace: shared-workspace
     params:
     - name: namespace
-      value: "test"
+      value: "tekton-pipelines"
     - name: service-name
       value: "front-end"
 
